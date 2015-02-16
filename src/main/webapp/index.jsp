@@ -7,7 +7,8 @@
 	</head>
 	<body>
 		<center>
-		<h2>Welcome to Spring MVC 4.0</h2>
+		<h2>Welcome to Recognize.me</h2>
+		<a href="/showUpload">Upload File</a>
 	</center>
 	</body>
 </html>
