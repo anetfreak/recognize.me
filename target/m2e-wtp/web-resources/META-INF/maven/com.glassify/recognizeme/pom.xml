@@ -55,16 +55,50 @@
 	</dependency>
 	
 	<dependency>
+        <groupId>edu.uci.ics</groupId>
+        <artifactId>crawler4j</artifactId>
+        <version>4.1</version>
+    </dependency>
+    
+    <!-- Spring and Transactions -->
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-tx</artifactId>
+        <version>${spring.version}</version>
+    </dependency>
+ 
+    <!-- Spring JDBC Support -->
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jdbc</artifactId>
+        <version>${spring.version}</version>
+    </dependency>
+	
+	<!-- JSTL library -->
+	<dependency>
 	    <groupId>javax.servlet</groupId>
         <artifactId>jstl</artifactId>
         <version>1.2</version>
     </dependency>
 	
+    <!-- MySQL database driver -->
 	<dependency>
-        <groupId>edu.uci.ics</groupId>
-        <artifactId>crawler4j</artifactId>
-        <version>4.1</version>
-    </dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>5.1.9</version>
+	</dependency>
+	
+	<!-- Jackson JSON Mapper -->
+	<dependency>
+		<groupId>org.codehaus.jackson</groupId>
+		<artifactId>jackson-mapper-asl</artifactId>
+		<version>1.9.13</version>
+	</dependency>
 		
   </dependencies>
   <build>

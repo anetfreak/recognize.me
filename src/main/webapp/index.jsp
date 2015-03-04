@@ -3,7 +3,11 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>Welcome!</title>
+		<title>Recognize.Me!</title>
+		<script type="text/javascript" src="resources/js/jquery-2.1.3.min.js"></script>
+		<script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="resources/bootstrap/css/bootstrap-theme.min.css">
 	</head>
 	<body>
 		<center>
