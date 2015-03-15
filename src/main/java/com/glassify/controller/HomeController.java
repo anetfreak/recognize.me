@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-
 /**
  * Handles requests for the application home page.
  */
@@ -22,6 +21,11 @@ public class HomeController {
 	@RequestMapping("/showUpload")
 	public ModelAndView showUploadPage() {
 		return new ModelAndView("file-upload");
+	}
+	
+	@RequestMapping(value = "/uploadMessage", method = RequestMethod.POST)
+	public void getAdbyId(@RequestParam("message") String message) {
+		System.out.println(message);
 	}
 	
 	@RequestMapping(value="/uploadImage", method=RequestMethod.POST)
