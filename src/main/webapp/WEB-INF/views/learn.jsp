@@ -13,7 +13,7 @@
 	    		<div class="col-md-8">
 		            <h4>Post a new advertisement</h4>
 <%-- 		            <form:form method="POST" action="uploadImage"  enctype="multipart/form-data"> --%>
-					<form class="form-horizontal" style="margin-top: 30px;" id="createAdForm">
+					<form class="form-horizontal" style="margin-top: 30px;" id="addBrandForm">
 					  <div class="form-group">
 					    <label for="brandName" class="col-sm-2 control-label">Brand Name</label>
 					    <div class="col-sm-6">
@@ -49,15 +49,15 @@
 					    </div>
 					  </div>
 					  <div class="form-group">
-					    <label for="content" class="col-sm-2 control-label">Content</label>
+					    <label for="brandFiles" class="col-sm-2 control-label">Files</label>
 					    <div class="col-sm-8">
-					    	<input type="file" id="content">
-					    	<p class="help-block">Choose the file to be used as advertisement here..</p>
+					    	<input type="file" id="brandFiles">
+					    	<p class="help-block">Choose the file to be used for learning the brand..</p>
 					    </div>
 					  </div>
 					  <div class="form-group">
 					    <div class="col-sm-offset-2 col-sm-5">
-					      <button type="submit" class="btn btn-primary">Create</button>
+					      <button type="submit" class="btn btn-primary">Add Brand</button>
 					    </div>
 					  </div>
 					</form>
