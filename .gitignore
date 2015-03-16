@@ -1,0 +1,4 @@
+
+*.MF
+
+target/m2e-wtp/web-resources/META-INF/maven/com.glassify/recognizeme/pom.properties
