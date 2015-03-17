@@ -38,8 +38,10 @@ public class UploadController {
                 stream.close();
                 //TODO - Make a call to the OpenCV module to identify the brand.
                 //TODO - Make a call AdServer with the use and brand information to fetch the ad.
+                System.out.println("You successfully uploaded " + file.getName() + "! The file size was " + file.getSize()/1000 + " Kb.");
                 return "You successfully uploaded " + file.getName() + "! The file size was " + file.getSize()/1000 + " Kb.";
             } catch (Exception e) {
+            	e.printStackTrace();
                 return "You failed to upload " + file.getName() + " => " + e.getMessage();
             }
         } else {

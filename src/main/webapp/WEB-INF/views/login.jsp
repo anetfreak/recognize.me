@@ -10,6 +10,7 @@
 		<script type="text/javascript" src="resources/js/index.js"></script>
 		<link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" href="resources/bootstrap/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="resources/css/index.css">
 	</head>
 	<body>
@@ -46,12 +47,12 @@
 										<div style="display: none" id="login-alert" class="alert alert-danger col-sm-12"></div>
 										<form id="loginform" class="form-horizontal" role="form">
 											<div style="margin-bottom: 25px" class="input-group">
-												<span class="input-group-addon"> <i class="glyphicon glyphicon-user"></i></span>
+												<span class="input-group-addon"> <i class="fa fa-envelope"></i></span>
 												<input id="login-username" type="text" class="form-control" name="username" value="" placeholder="email">
 											</div>
 						
 											<div style="margin-bottom: 25px" class="input-group">
-												<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+												<span class="input-group-addon"><i class="fa fa-lock"></i></span>
 												<input id="login-password" type="password" class="form-control" name="password" placeholder="password">
 											</div>
 											<div style="margin-top: 10px" class="form-group">
