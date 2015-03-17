@@ -8,10 +8,10 @@
 	</head>
 	<body>
 		<div class="container">
-			<h3>Add Brand information for learning</h3>
+			<h3>Add Brand</h3>
 	    	<div class="row">
 	    		<div class="col-md-8">
-		            <h4>Post a new advertisement</h4>
+		            <h4>Add a new brand</h4>
 <%-- 		            <form:form method="POST" action="uploadImage"  enctype="multipart/form-data"> --%>
 					<form class="form-horizontal" style="margin-top: 30px;" id="addBrandForm">
 					  <div class="form-group">

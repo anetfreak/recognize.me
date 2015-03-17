@@ -4,7 +4,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,14 +12,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * Handles requests for the application home page.
+ * Handles requests for the upload module pages. To be used without the front-end.
  */
-@Controller
-public class HomeController {
+public class UploadController {
 	
-	@RequestMapping("/showUpload")
+	@RequestMapping("/upload")
 	public ModelAndView showUploadPage() {
-		return new ModelAndView("file-upload");
+		return new ModelAndView("upload");
 	}
 	
 	@RequestMapping(value = "/uploadMessage", method = RequestMethod.POST)
@@ -46,5 +44,4 @@ public class HomeController {
             return "You failed to upload " + file.getName() + " because the file was empty.";
         }
 	}
-	
 }

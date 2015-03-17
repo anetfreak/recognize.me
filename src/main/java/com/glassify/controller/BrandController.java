@@ -5,14 +5,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * Handles requests for the learning module information.
+ * Handles requests for the brand module pages.
  */
 @Controller
-public class LearningController {
+public class BrandController {
 	
-	@RequestMapping("/showLearn")
-	public ModelAndView showLearnPage() {
-		return new ModelAndView("learn");
+	@RequestMapping("/addBrand")
+	public ModelAndView showAddBrandPage() {
+		return new ModelAndView("add-brand");
 	}
 
 }
