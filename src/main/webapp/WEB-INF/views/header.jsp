@@ -15,6 +15,7 @@
 		<li><a href="/upload">Upload</a></li>
 		<li><a href="/about">About</a></li>
 		<li><a href="/contact">Contact</a></li>
+		<li><a href="/login">Login/Signup</a></li>
 	</ul>
 </nav>
 <!-- /#sidebar-wrapper -->
