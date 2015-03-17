@@ -301,6 +301,14 @@ html { height: 100%;}
 .footer {
     color: #887;
     background-color: #eee;
-    padding-top: 30px;
-    padding-bottom: 30px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#wrapper.toggled #footer {
+    padding-left: 220px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
 }

@@ -12,6 +12,7 @@
 		<link rel="stylesheet" href="resources/css/index.css">
 	</head>
 	<body>
+		<!-- #wrapper -->
 		<div id="wrapper">
 			<div class="overlay"></div>
 			<%@include file="/WEB-INF/views/header.jsp"%>
@@ -27,7 +28,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-lg-8 col-lg-offset-1">
-							<h2>Recognize.me</h2>
+							<h3>Recognize.me</h3>
 						</div>
 					</div>
 				</div>
