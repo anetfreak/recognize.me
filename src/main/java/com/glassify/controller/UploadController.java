@@ -24,8 +24,9 @@ public class UploadController {
 	}
 	
 	@RequestMapping(value = "/uploadMessage", method = RequestMethod.POST)
-	public void getAdbyId(@RequestParam("message") String message) {
+	public @ResponseBody String uploadMessage(@RequestParam("message") String message) {
 		System.out.println(message);
+		return "Success";
 	}
 	
 	@RequestMapping(value="/uploadImage", method=RequestMethod.POST)
