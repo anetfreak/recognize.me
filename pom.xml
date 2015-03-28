@@ -117,8 +117,45 @@
       <artifactId>google-http-client-jackson2</artifactId>
       <version>1.17.0-rc</version>
     </dependency>
-		
+
+	<!--  OpenCV -->
+	<dependency>
+      <groupId>com.googlecode.javacpp</groupId>
+      <artifactId>javacpp</artifactId>
+      <version>0.7</version>
+    </dependency>
+    <dependency>
+      <groupId>com.googlecode.javacv</groupId>
+      <artifactId>javacv</artifactId>
+      <version>0.7</version>
+    </dependency>
+    <dependency>
+      <groupId>com.googlecode.javacv</groupId>
+      <artifactId>javacv</artifactId>
+      <version>0.7</version>
+      <classifier>linux-x86_64</classifier>
+    </dependency>
+    <dependency>
+		<groupId>nu.pattern</groupId>
+		<artifactId>opencv</artifactId>
+		<version>2.4.9-4</version>
+	</dependency>
+	
   </dependencies>
+  
+  <repositories>
+    <repository>
+      <id>javacpp</id>
+      <name>JavaCPP</name>
+      <url>http://maven2.javacpp.googlecode.com/git/</url>
+    </repository>
+    <repository>
+      <id>javacv</id>
+      <name>JavaCV</name>
+      <url>http://maven2.javacv.googlecode.com/git/</url>
+    </repository>
+  </repositories>
+  
   <build>
     <finalName>recognizeme</finalName>
   </build>

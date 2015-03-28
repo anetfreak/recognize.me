@@ -37,6 +37,11 @@ public class UploadController {
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(file.getName())));
                 stream.write(bytes);
                 stream.close();
+                
+                //Call match image at opencv
+                ImageMatcher matcher = new ImageMatcher();
+                matcher.matchImage(bytes);
+                
                 //TODO - Make a call to the OpenCV module to identify the brand.
                 //TODO - Make a call AdServer with the use and brand information to fetch the ad.
                 System.out.println("You successfully uploaded " + file.getName() + "! The file size was " + file.getSize()/1000 + " Kb.");
