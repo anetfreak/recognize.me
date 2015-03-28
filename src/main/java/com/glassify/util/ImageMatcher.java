@@ -1,4 +1,4 @@
-package com.glassify.controller;
+package com.glassify.util;
 
 import static com.googlecode.javacv.cpp.opencv_core.cvClearMemStorage;
 import static com.googlecode.javacv.cpp.opencv_core.cvLoad;

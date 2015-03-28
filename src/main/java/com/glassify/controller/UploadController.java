@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.glassify.util.ImageMatcher;
+
 /**
  * Handles requests for the upload module pages. To be used without the front-end.
  */
