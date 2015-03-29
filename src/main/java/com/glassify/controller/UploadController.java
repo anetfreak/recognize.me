@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.glassify.util.ImageMatcher;
+import com.glassify.util.PostRequestUtil;
 
 /**
  * Handles requests for the upload module pages. To be used without the front-end.
@@ -43,7 +44,9 @@ public class UploadController {
                 //Call match image at opencv
                 ImageMatcher matcher = new ImageMatcher();
                 String result_brand = matcher.matchImage(bytes);
-                
+                PostRequestUtil request = new PostRequestUtil();
+                request.setUrl("http://localhost:8080/retrieveAd"); //TODO remove hard coded Url
+                request.setStrValues("brandName=Dell&latitude=1.1&longitude=5.5&category=Electronics"); //TODO remove hardcoded
                 //TODO - Make a call to the OpenCV module to identify the brand.
                 //TODO - Make a call AdServer with the use and brand information to fetch the ad.
                 System.out.println("You successfully uploaded " + 
