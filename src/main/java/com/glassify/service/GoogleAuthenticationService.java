@@ -143,6 +143,7 @@ public class GoogleAuthenticationService {
 		// Store the credentials.getAccessToken() and credentials.getRefreshToken()
 		// string values in your database.
 		System.out.println("Inside Store Credentials");
+		System.out.println("UserId - " + userId);
 		System.out.println("Access Token - " + credentials.getAccessToken());
 		System.out.println("Refresh Token - "  + credentials.getRefreshToken());
 		MyCredential myCredential = new MyCredential();
