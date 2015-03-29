@@ -42,11 +42,14 @@ public class UploadController {
                 
                 //Call match image at opencv
                 ImageMatcher matcher = new ImageMatcher();
-                matcher.matchImage(bytes);
+                String result_brand = matcher.matchImage(bytes);
                 
                 //TODO - Make a call to the OpenCV module to identify the brand.
                 //TODO - Make a call AdServer with the use and brand information to fetch the ad.
-                System.out.println("You successfully uploaded " + file.getName() + "! The file size was " + file.getSize()/1000 + " Kb.");
+                System.out.println("You successfully uploaded " + 
+                		file.getName() + "! The file size was " + 
+                			file.getSize()/1000 + " Kb." +
+                			"\n Match: "+ result_brand);
                 return "You successfully uploaded " + file.getName() + "! The file size was " + file.getSize()/1000 + " Kb.";
             } catch (Exception e) {
             	e.printStackTrace();

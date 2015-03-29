@@ -9,6 +9,9 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,14 +30,35 @@ import com.googlecode.javacv.cpp.opencv_core.IplImage;
 import com.googlecode.javacv.cpp.opencv_objdetect.CvHaarClassifierCascade;
 
 public class ImageMatcher{
-		private static final String cascades_file= "cascades.txt";
+		private static final String cascades_file= "/opt/project/cascades.xml";
+		
+		public static void main(String[] args){
+			ImageMatcher matcher = new ImageMatcher();
+			File file = new File("/opt/project/test_samples/test2.jpg");
+	        FileInputStream fin = null;
+            try {
+				fin = new FileInputStream(file);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+ 
+            byte fileContent[] = new byte[(int)file.length()];
+             
+            try {
+				fin.read(fileContent);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			matcher.matchImage(fileContent);
+		}
+		
 		private IplImage convertBtyeToIplImagebyte(byte[] bytes){
 			InputStream in = new ByteArrayInputStream(bytes);
 			BufferedImage buffImage = null;;
 			try {
 				buffImage = ImageIO.read(in);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -43,12 +67,16 @@ public class ImageMatcher{
 		    return image;
 		}
 		
-		public void matchImage(byte[] bytes){
+		public String matchImage(byte[] bytes){
 			IplImage image = convertBtyeToIplImagebyte(bytes);
 			List<String> cascades = getAllCascade(cascades_file);
             while(!cascades.isEmpty()){
-                    detect(cascades.remove(0), image);
+            	//System.out.println(cascades.remove(0));
+                String result = detect(cascades.remove(0), image);
+                if (result != null)
+                	return result;
             }
+            return "Failed";
 		}
 
         public List getAllCascade(String cascades_file){
@@ -69,10 +97,11 @@ public class ImageMatcher{
             return cascades;
         }
         
-        public void detect(String XML_FILE, IplImage src){
-
+        public String detect(String XML_FILE, IplImage src){
+        	//System.out.println("Loading file: " + XML_FILE);
             CvHaarClassifierCascade cascade = new
             CvHaarClassifierCascade(cvLoad(XML_FILE));
+            
             CvMemStorage storage = CvMemStorage.create();
             CvSeq sign = cvHaarDetectObjects(
                     src,
@@ -83,11 +112,23 @@ public class ImageMatcher{
                     0);
 
             cvClearMemStorage(storage);
-
+            
             int total_Faces = sign.total();
-            if (total_Faces > 0)
-                System.out.println("Success : " + XML_FILE);
-
+            if (total_Faces > 0){
+                //System.out.println("Success : " + XML_FILE);
+                String[] parts=XML_FILE.split("/");
+                if((parts != null) && (parts.length > 0)){
+                	String file = parts[parts.length-1];
+                	System.out.println("filename: "+file);
+                	parts = file.split("[.]");
+                	if((parts != null) && (parts.length > 0)){
+                		file = parts[0];
+                		System.out.println("BrandName : " + file);
+                		return file;
+                	}
+                }
+            }
+            return null;
     }
 }
 
