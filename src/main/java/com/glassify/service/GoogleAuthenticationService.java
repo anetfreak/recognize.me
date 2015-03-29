@@ -6,13 +6,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.glassify.domain.MyCredential;
+import com.glassify.facade.CredentialFacade;
 import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.auth.oauth2.Credential.AccessMethod;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
-import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -21,6 +23,16 @@ import com.google.api.services.oauth2.model.Userinfoplus;
 
 public class GoogleAuthenticationService {
 
+//	private CredentialFacade credentialFacade = new CredentialFacadeImpl();
+	
+	@Autowired
+	private CredentialFacade credentialFacade;
+	
+	public GoogleAuthenticationService(CredentialFacade credentialFacade) {
+		this.credentialFacade = credentialFacade;
+	}
+	
+	
 	ClassLoader classLoader = getClass().getClassLoader();
 	File file = new File(classLoader.getResource("client_secrets.json").getFile());
 
@@ -35,6 +47,7 @@ public class GoogleAuthenticationService {
 	/**
 	 * Exception thrown when an error occurred while retrieving credentials.
 	 */
+	@SuppressWarnings("serial")
 	public static class GetCredentialsException extends Exception {
 
 		protected String authorizationUrl;
@@ -66,6 +79,7 @@ public class GoogleAuthenticationService {
 	/**
 	 * Exception thrown when a code exchange has failed.
 	 */
+	@SuppressWarnings("serial")
 	public static class CodeExchangeException extends GetCredentialsException {
 
 		/**
@@ -82,6 +96,7 @@ public class GoogleAuthenticationService {
 	/**
 	 * Exception thrown when no refresh token has been found.
 	 */
+	@SuppressWarnings("serial")
 	public static class NoRefreshTokenException extends GetCredentialsException {
 
 		/**
@@ -98,6 +113,7 @@ public class GoogleAuthenticationService {
 	/**
 	 * Exception thrown when no user ID could be retrieved.
 	 */
+	@SuppressWarnings("serial")
 	private static class NoUserIdException extends Exception {
 	}
 
@@ -108,9 +124,12 @@ public class GoogleAuthenticationService {
 	 * @return Stored Credential if found, {@code null} otherwise.
 	 */
 	 Credential getStoredCredentials(String userId) {
-		// TODO: Implement this method to work with your database. Instantiate a new
-		// Credential instance with stored accessToken and refreshToken.
-		 return credentials;
+		 //Credential instance with stored accessToken and refreshToken.
+		 List<MyCredential> myCredential = credentialFacade.getCredentialForUser(userId);
+		 if(!myCredential.isEmpty())
+			 return myCredential.get(0).getCredential();
+		 else
+			 return null;
 	}
 
 	/**
@@ -126,6 +145,10 @@ public class GoogleAuthenticationService {
 		System.out.println("Inside Store Credentials");
 		System.out.println("Access Token - " + credentials.getAccessToken());
 		System.out.println("Refresh Token - "  + credentials.getRefreshToken());
+		MyCredential myCredential = new MyCredential();
+		myCredential.setCredential(credentials);
+		myCredential.setUserId(userId);
+		credentialFacade.saveCredential(myCredential);
 	}
 
 	/**
@@ -225,20 +248,6 @@ public class GoogleAuthenticationService {
 	 * @throws IOException Unable to load client_secrets.json.
 	 */
 
-	public  void main(String[] args){
-		try {
-			getCredentials("4/2hTkSZ3PFqpOP-Zsgx188o_4mQwZCg6vF8qAABv8zq8.oqCuAWysj1gSEnp6UAPFm0FyGfOfmAI","");
-		} catch (CodeExchangeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoRefreshTokenException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	public  Credential getCredentials(String authorizationCode, String state)
 			throws CodeExchangeException, NoRefreshTokenException, IOException {
 		String userId = "";
