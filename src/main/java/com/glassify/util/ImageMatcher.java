@@ -86,7 +86,7 @@ public class ImageMatcher{
                 String line = br.readLine();
 
                 while (line != null) {
-                        System.out.println(line);
+//                        System.out.println(line);
                         cascades.add(line);
                     line = br.readLine();
                 }
@@ -119,7 +119,7 @@ public class ImageMatcher{
                 String[] parts=XML_FILE.split("/");
                 if((parts != null) && (parts.length > 0)){
                 	String file = parts[parts.length-1];
-                	System.out.println("filename: "+file);
+                	System.out.println("File Path: "+ XML_FILE);
                 	parts = file.split("[.]");
                 	if((parts != null) && (parts.length > 0)){
                 		file = parts[0];
