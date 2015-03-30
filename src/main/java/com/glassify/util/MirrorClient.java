@@ -59,6 +59,14 @@ public class MirrorClient {
   }
   
   
+  public TimelineItem createTimeLineItemWithText(String text){
+	    TimelineItem timelineItem = new TimelineItem();
+	    timelineItem.setText(text);
+	    timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
+	    
+	    return timelineItem;
+	  }
+  
   public Mirror getMirror(Credential credential) {
     return new Mirror.Builder(new NetHttpTransport(), new JacksonFactory(), credential)
         .setApplicationName("Glass AdServer").build();
