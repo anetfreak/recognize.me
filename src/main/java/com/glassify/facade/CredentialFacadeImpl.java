@@ -20,8 +20,12 @@ public class CredentialFacadeImpl implements CredentialFacade {
 	}
 
 	@Override
-	public List<MyCredential> getCredentialForUser(String userId) {
-		return credentialDao.getCredentialForUser(userId);
+	public MyCredential getCredentialForUser(String userId) {
+		List<MyCredential> myCredential = credentialDao.getCredentialForUser(userId);
+		if(!myCredential.isEmpty())
+			return myCredential.get(0);
+		else
+			return null;
 	}
 
 }

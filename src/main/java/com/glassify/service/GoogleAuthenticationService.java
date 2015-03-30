@@ -125,11 +125,7 @@ public class GoogleAuthenticationService {
 	 */
 	 Credential getStoredCredentials(String userId) {
 		 //Credential instance with stored accessToken and refreshToken.
-		 List<MyCredential> myCredential = credentialFacade.getCredentialForUser(userId);
-		 if(!myCredential.isEmpty())
-			 return myCredential.get(0).getCredential();
-		 else
-			 return null;
+		 return credentialFacade.getCredentialForUser(userId).getCredential();
 	}
 
 	/**
