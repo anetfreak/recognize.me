@@ -26,15 +26,20 @@
 					<span class="hamb-bottom"></span>
 				</button>
 				
-				<div class="container">
-					<div class="row">
-						<div class="col-lg-8 col-lg-offset-1">
-							<h3>Recognize.me</h3>
-							<div style="margin-top:50px;">
-								<a href="https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=252473431161-0314f3l13do6kb34r7v0squmk604fjda.apps.googleusercontent.com&redirect_uri=http://localhost:8080/oauth2callback&scope=https://www.googleapis.com/auth/glass.timeline+https://www.googleapis.com/auth/userinfo.profile&state=amit.agrawal@sjsu.edu&approval_prompt=force&access_type=offline">Click here</a> to authorize your Glass here..
-							</div>
-						</div>
-					</div>
+				<header class="header">
+			        <div class="container">
+			          <div class="row">
+			            <div class="col-md-5 col-md-offset-1">
+			                <div class="content">
+			                  <div class="pull-middle">
+			                    <h2 class="page-header">Recognize.me</h2>
+			                    <p class="lead">Capture the famous brands and find relevant advertisements for them..</p>
+			                  </div>              
+			                </div>
+			            </div>
+			          </div>
+			        </div>
+			    </header>
 				</div>
 			</div>
 			<!-- /#page-content-wrapper -->
