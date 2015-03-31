@@ -2,7 +2,12 @@ package com.glassify.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.glassify.domain.Brand;
+import com.glassify.facade.BrandFacade;
 
 /**
  * Handles requests for the brand module pages.
@@ -10,9 +15,37 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class BrandController {
 	
-	@RequestMapping("/addBrand")
-	public ModelAndView showAddBrandPage() {
-		return new ModelAndView("add-brand");
+	private BrandFacade brandfacade;
+	
+	@RequestMapping(value = "/addBrand", method = RequestMethod.GET)
+	public ModelAndView showCreateAdPage() {
+		System.out.println("In GET - create brand");
+		ModelAndView modelView = new ModelAndView("add-brand");
+		return modelView;
+	}
+	
+	@RequestMapping(value = "/addBrand", method = RequestMethod.POST)
+	public void showAddBrandPage(
+			@RequestParam("brandName") String brandName,
+			@RequestParam("url") String url,
+			@RequestParam("path") String path,
+			@RequestParam("category") String category,
+			@RequestParam("description") String description
+			) {
+		
+		System.out.println("In POST - create brand");
+		Brand brand = new Brand();
+		brand.setName(brandName);
+		brand.setWebsite(url);
+		brand.setDomain(category);
+		brand.setDesc(description);
+		
+		try {
+			brandfacade.saveBrand(brand);
+		} catch(Exception e){
+			System.out.println("Exception encountered.!");
+			e.printStackTrace();
+		}
 	}
 
 }
