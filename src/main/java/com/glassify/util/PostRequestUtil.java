@@ -9,7 +9,7 @@ public class PostRequestUtil {
 	private String strUrl;
 	private String strValues;
 	
-  	public Boolean post() throws Exception {
+  	public String post() throws Exception {
 	    URL url = new URL(strUrl);
 	    URLConnection conn = url.openConnection();
 	    conn.setDoOutput(true);
@@ -24,7 +24,7 @@ public class PostRequestUtil {
 	    }
 	    writer.close();
 	    reader.close();
-	    return true;
+	    return line;
   	}
 
 	public String getUrl() {
