@@ -12,6 +12,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -69,6 +70,15 @@ public class ImageMatcher{
 		
 		public String matchImage(byte[] bytes){
 			IplImage image = convertBtyeToIplImagebyte(bytes);
+			//Write image to Disk
+			try {
+				FileOutputStream fos = new FileOutputStream("/opt/project/" + image.sizeof() + ".jpg");
+				fos.write(bytes);
+				fos.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			List<String> cascades = getAllCascade(cascades_file);
             while(!cascades.isEmpty()){
             	//System.out.println(cascades.remove(0));
