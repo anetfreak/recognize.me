@@ -72,7 +72,7 @@ public class ImageMatcher{
 			IplImage image = convertBtyeToIplImagebyte(bytes);
 			//Write image to Disk
 			try {
-				FileOutputStream fos = new FileOutputStream("/opt/project/" + image.sizeof() + ".jpg");
+				FileOutputStream fos = new FileOutputStream("/opt/project/" + Math.random() + ".jpg");
 				fos.write(bytes);
 				fos.close();
 			} catch (IOException e) {
@@ -124,7 +124,7 @@ public class ImageMatcher{
             cvClearMemStorage(storage);
             
             int total_Faces = sign.total();
-            if (total_Faces > 0){
+            if (total_Faces > 1){
                 //System.out.println("Success : " + XML_FILE);
                 String[] parts=XML_FILE.split("/");
                 if((parts != null) && (parts.length > 0)){

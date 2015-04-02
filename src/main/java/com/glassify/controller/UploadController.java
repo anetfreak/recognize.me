@@ -69,9 +69,11 @@ public class UploadController {
                 PostRequestUtil request = new PostRequestUtil();
                 request.setUrl("http://localhost:8080/retrieveAd"); //TODO remove hard coded Url
                 request.setStrValues("brandName=Dell&latitude=1.1&longitude=5.5&category=Electronics"); //TODO remove hardcoded
-                String AdResponse = request.post();
-                //TODO - check if response is fine
-                resultString += "\nResponse from AdServer: " + AdResponse;
+                
+//                String AdResponse = request.post();
+//                //TODO - check if response is fine
+//                resultString += "\nResponse from AdServer: " + AdResponse;
+                
                 System.out.println(resultString);
                 
                 //TODO - Parse the response
