@@ -7,6 +7,7 @@ public class Brand {
 	private String website;
 	private String domain;
 	private String desc;
+	private String brandImage;
 	
 	public int getId() {
 		return id;
@@ -37,5 +38,11 @@ public class Brand {
 	}
 	public void setDesc(String desc) {
 		this.desc = desc;
+	}
+	public String getBrandImage() {
+		return brandImage;
+	}
+	public void setBrandImage(String file) {
+		this.brandImage = file;
 	}
 }

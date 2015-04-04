@@ -13,6 +13,7 @@ public class BrandFacadeImpl implements BrandFacade{
 	private BrandDao brandDao;
 	
 	public void saveBrand(Brand brand){
+		System.out.println("In facadeImpl");
 		brandDao.saveBrand(brand);
 	}
 }
