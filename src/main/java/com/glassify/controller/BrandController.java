@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.glassify.domain.Brand;
 import com.glassify.facade.BrandFacade;
+import java.util.List;
 
 /**
  * Handles requests for the brand module pages.
@@ -50,5 +51,13 @@ public class BrandController {
 		catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	@RequestMapping(value = "/showBrands")
+	public ModelAndView showBrands() {
+		List<Brand> brands = brandfacade.getAllBrands();
+		ModelAndView modelandview = new ModelAndView("show-brands");
+		modelandview.addObject("brands", brands);
+		return modelandview;
 	}
 }

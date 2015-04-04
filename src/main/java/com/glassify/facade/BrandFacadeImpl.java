@@ -1,5 +1,7 @@
 package com.glassify.facade;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +15,10 @@ public class BrandFacadeImpl implements BrandFacade{
 	private BrandDao brandDao;
 	
 	public void saveBrand(Brand brand){
-		System.out.println("In facadeImpl");
 		brandDao.saveBrand(brand);
+	}
+	
+	public List<Brand> getAllBrands(){
+		return brandDao.getAllBrands();
 	}
 }
