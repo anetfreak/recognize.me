@@ -26,6 +26,7 @@ public class BrandController {
 
 	@Autowired
 	private BrandFacade brandfacade;
+	private String saveDirectory = "/tmp/";
 
 	@RequestMapping(value = "/addBrand")
 	public ModelAndView showCreateAdPage() {
@@ -35,7 +36,7 @@ public class BrandController {
 
 	@RequestMapping(value = "/addBrand", method = RequestMethod.POST)
 	@ResponseBody
-	public void showAddBrandPage(
+	public ModelAndView showAddBrandPage(
 			@RequestParam("brandName") String brandName,
 			@RequestParam("url") String url,
 			@RequestParam("category") String category,
@@ -46,6 +47,8 @@ public class BrandController {
 		brand.setName(brandName);
 		brand.setWebsite(url);
 		brand.setDomain(category);
+		brand.setDesc(description);
+		
 		if (!brandImage.isEmpty()) {
 			/*
 			try {
@@ -54,68 +57,46 @@ public class BrandController {
 				e.printStackTrace();
 			}
 			 */
-			try {
-				String filepath = saveImage(brand.getName(), brandImage);
+			
+			String filepath = saveImage(brandImage);
 				brand.setBrandImage(filepath);
-			} catch (IOException ioexception) {
-				ioexception.printStackTrace();
-			}
 		}
-		brand.setDesc(description);
+		
 		try {
 			brandfacade.saveBrand(brand);
+			return new ModelAndView("successBrand");
 		} catch (Exception e) {
 			e.printStackTrace();
+			return new ModelAndView("errorBrand");
 		}
 	}
-
+	
 	/**
-	 * Method to check the if the format of the image uploaded is jpeg or not
-	 * 
+	 * Method to save the file/brand image to file system
 	 * @param brandImage
+	 * @return
 	 */
-	private void validateImageFormat(MultipartFile brandImage) {
-		if (!brandImage.getContentType().equals("image/jpeg")) {
-			throw new RuntimeException("Only JPG images are accepted");
+	private String saveImage(MultipartFile brandImage){
+		String filelocation = saveDirectory + brandImage.getOriginalFilename();
+		if (brandImage != null && !(brandImage.isEmpty())) {
+			try {
+				System.out.println("Saving file: "
+						+ brandImage.getOriginalFilename());
+				if (!brandImage.getOriginalFilename().equals("")) {
+					brandImage.transferTo(new File(filelocation));
+					System.out.println("You have successfully uploaded the file : " +filelocation);
+					
+				}
+			} catch (Exception e) {
+				System.out.println("Failed to upload the file "
+						+ brandImage.getOriginalFilename());
+			}
+		} 
+		else {
+			System.out.println("Could not upload the file as it was empty.");
+			return null;
 		}
-	}
-
-	/**
-	 * Method to save the image locally to the file system
-	 * 
-	 * @param filename
-	 * @param image
-	 * @throws RuntimeException
-	 * @throws IOException
-	 */
-	private String saveImage(String brandName, MultipartFile image)
-			throws RuntimeException, IOException {
-		try {
-			byte[] bytes = image.getBytes();
-			String rootPath = System.getProperty("user.name");
-			System.out.println(rootPath);
-			File dir = new File(rootPath + File.separator + "tmpFiles");
-            if (!dir.exists())
-                dir.mkdirs();
-            
-            System.out.println(dir);
-         // Create the file on server
-            File serverFile = new File(dir.getAbsolutePath()
-                    + File.separator + brandName);
-            System.out.println(serverFile);
-            
-            BufferedOutputStream stream = new BufferedOutputStream(
-                    new FileOutputStream(serverFile));
-            stream.write(bytes);
-            stream.close();
-            
-            System.out.println("Server File Location="
-                    + serverFile.getAbsolutePath());
-
-           return serverFile.toString();
-		} catch (Exception e) {
-            return "You failed to upload " + brandName + " => " + e.getMessage();
-        }
+		return filelocation;
 	}
 
 	@RequestMapping(value = "/showBrands")
@@ -124,5 +105,11 @@ public class BrandController {
 		ModelAndView modelandview = new ModelAndView("show-brands");
 		modelandview.addObject("brands", brands);
 		return modelandview;
+	}
+	
+	@RequestMapping("/successBrand")
+	public ModelAndView getsuccessMessage() {
+		ModelAndView modelAndView = new ModelAndView("successBrand");
+		return modelAndView;
 	}
 }

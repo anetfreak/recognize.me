@@ -34,7 +34,6 @@
 							<hr>
 							<div id="add-brand" style="margin-top: 20px;">
 					            <h4>Add a new brand</h4>
-			<%-- 		            <form:form method="POST" action="uploadImage"  enctype="multipart/form-data"> --%>
 								<form class="form-horizontal" style="margin-top: 30px;" id="addBrandForm" method="POST" enctype="multipart/form-data"
 								action="addBrand">
 								  <div class="form-group">
@@ -58,7 +57,7 @@
 								  <div class="form-group">
 								    <label for="path" class="col-sm-2 control-label">Storage Path</label>
 								    <div class="col-sm-6">
-								      <input type="text" class="form-control" id="path" placeholder="Path" value="/tmp" name="path">
+								      <input type="text" class="form-control" id="path" placeholder="Path" value="/tmp" name="path" readonly>
 								    </div>
 								  </div>
 								  <div class="form-group">
