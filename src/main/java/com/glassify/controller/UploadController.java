@@ -54,7 +54,7 @@ public class UploadController {
                 System.out.println(resultString);
                 //Make a call to the OpenCV module to identify the brand.
                 ImageMatcher matcher = new ImageMatcher();
-                String result_brand = matcher.matchImage(bytes);
+                String result_brand = matcher.matchTemplate(bytes);
                 
                 if(result_brand == "Failed") {
                 	resultString += "\n Not matched with any brand we support.";
@@ -66,9 +66,9 @@ public class UploadController {
                 System.out.println(resultString);
                 
                 //Make a call AdServer with the use and brand information to fetch the ad.
-                PostRequestUtil request = new PostRequestUtil();
-                request.setUrl("http://localhost:8080/retrieveAd"); //TODO remove hard coded Url
-                request.setStrValues("brandName=Dell&latitude=1.1&longitude=5.5&category=Electronics"); //TODO remove hardcoded
+            //    PostRequestUtil request = new PostRequestUtil();
+            //    request.setUrl("http://localhost:8080/retrieveAd"); //TODO remove hard coded Url
+            //    request.setStrValues("brandName=Dell&latitude=1.1&longitude=5.5&category=Electronics"); //TODO remove hardcoded
                 
 //                String AdResponse = request.post();
 //                //TODO - check if response is fine
@@ -90,7 +90,7 @@ public class UploadController {
                 System.out.println(resultString);
                 //Post Ad to Glass Mirror
                 MirrorClient mirrorClient = new MirrorClient();
-                TimelineItem timelineItem = mirrorClient.createTimeLineItemWithText("Test");
+                TimelineItem timelineItem = mirrorClient.createTimeLineItemWithText("Ad for Brand : result_brand");
                 mirrorClient.insertTimelineItem(credential, timelineItem);
                 
                 System.out.println("You successfully uploaded " + 

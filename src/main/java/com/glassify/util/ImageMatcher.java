@@ -139,6 +139,55 @@ public class ImageMatcher{
                 }
             }
             return null;
-    }
+        }
+        
+        public String matchTemplate(byte[] bytes){
+        	writeByteToFile(bytes);
+        	try
+            {            
+                Runtime rt = Runtime.getRuntime();
+                Process proc = rt.exec("/tmp/template /tmp/adobeData/ /tmp/scan.jpg");
+                int exitVal = proc.waitFor();
+                System.out.println("Process exitValue: " + exitVal);
+                if(exitVal == 100){
+                	return "Adobe Reader";
+                }
+                else {
+                	return "Walmart";
+                }
+            } catch (Throwable t)
+            {
+                t.printStackTrace();
+            }	
+        	return null;
+        }
+        
+        private String writeByteToFile(byte[] imageData) {
+	     // Write bytes to tmp file.
+	        final File tmpImageFile = new File("/tmp/scan.jpg");
+	        FileOutputStream tmpOutputStream = null;
+	        try {
+	            tmpOutputStream = new FileOutputStream(tmpImageFile);
+	            tmpOutputStream.write(imageData);
+	            System.out.println("File successfully written to tmp file");
+	            return "success";
+	        }
+	        catch (FileNotFoundException e) {
+	            System.out.println("FileNotFoundException: " + e);
+	            return null;
+	        }
+	        catch (IOException e) {
+	            System.out.println( "IOException: " + e);
+	            return null;
+	        }
+	        finally {
+	            if(tmpOutputStream != null)
+	                try {
+	                    tmpOutputStream.close();
+	                } catch (IOException e) {
+	                    System.out.println("IOException: " + e);
+	                }
+	        }
+        }
 }
 
