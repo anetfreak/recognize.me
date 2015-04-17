@@ -36,7 +36,7 @@ public class GoogleAuthenticationService {
 	ClassLoader classLoader = getClass().getClassLoader();
 	File file = new File(classLoader.getResource("client_secrets.json").getFile());
 
-	private static final String REDIRECT_URI = "http://ec2-52-64-0-154.ap-southeast-2.compute.amazonaws.com:8080/oauth2callback";
+	private static final String REDIRECT_URI = "http://localhost:8080/oauth2callback";
 	private static final List<String> SCOPES = Arrays.asList(
 			"https://www.googleapis.com/auth/glass.timeline",
 			"https://www.googleapis.com/auth/userinfo.profile");
