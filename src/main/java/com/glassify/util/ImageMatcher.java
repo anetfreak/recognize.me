@@ -2,11 +2,9 @@ package com.glassify.util;
 
 import static com.googlecode.javacv.cpp.opencv_core.cvClearMemStorage;
 import static com.googlecode.javacv.cpp.opencv_core.cvLoad;
-import static com.googlecode.javacv.cpp.opencv_highgui.cvLoadImage;
 import static com.googlecode.javacv.cpp.opencv_objdetect.cvHaarDetectObjects;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -21,10 +19,6 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-
-import com.googlecode.javacv.cpp.opencv_core.CvMat;
 import com.googlecode.javacv.cpp.opencv_core.CvMemStorage;
 import com.googlecode.javacv.cpp.opencv_core.CvSeq;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
@@ -32,7 +26,10 @@ import com.googlecode.javacv.cpp.opencv_objdetect.CvHaarClassifierCascade;
 
 public class ImageMatcher{
 		private static final String cascades_file= "/opt/project/cascades.xml";
-		
+		private static final String templateCommand = "/home/ec2-user/files/ImageMatching/templateMatch";
+		private static final String templates = "/home/ec2-user/files/templates/";
+		private static final String siftCommand = "/home/ec2-user/files/ImageMatching/siftMatch";
+		private static int fileNameCounter = 1;
 		public static void main(String[] args){
 			ImageMatcher matcher = new ImageMatcher();
 			File file = new File("/opt/project/test_samples/test2.jpg");
@@ -51,7 +48,7 @@ public class ImageMatcher{
 				e.printStackTrace();
 			}
 
-			matcher.matchImage(fileContent);
+			matcher.matchHarr(fileContent);
 		}
 		
 		private IplImage convertBtyeToIplImagebyte(byte[] bytes){
@@ -68,7 +65,7 @@ public class ImageMatcher{
 		    return image;
 		}
 		
-		public String matchImage(byte[] bytes){
+		public String matchHarr(byte[] bytes){
 			IplImage image = convertBtyeToIplImagebyte(bytes);
 			//Write image to Disk
 			try {
@@ -89,14 +86,12 @@ public class ImageMatcher{
             return "Failed";
 		}
 
-        public List getAllCascade(String cascades_file){
+        private List<String> getAllCascade(String cascades_file){
                 List<String> cascades = new ArrayList<String>();
             try(BufferedReader br = new BufferedReader(new FileReader(cascades_file))) {
-                StringBuilder sb = new StringBuilder();
                 String line = br.readLine();
 
                 while (line != null) {
-//                        System.out.println(line);
                         cascades.add(line);
                     line = br.readLine();
                 }
@@ -107,7 +102,7 @@ public class ImageMatcher{
             return cascades;
         }
         
-        public String detect(String XML_FILE, IplImage src){
+        private String detect(String XML_FILE, IplImage src){
         	//System.out.println("Loading file: " + XML_FILE);
             CvHaarClassifierCascade cascade = new
             CvHaarClassifierCascade(cvLoad(XML_FILE));
@@ -122,7 +117,7 @@ public class ImageMatcher{
                     0);
 
             cvClearMemStorage(storage);
-            
+
             int total_Faces = sign.total();
             if (total_Faces > 1){
                 //System.out.println("Success : " + XML_FILE);
@@ -140,21 +135,16 @@ public class ImageMatcher{
             }
             return null;
         }
-        
-        public String matchTemplate(byte[] bytes){
-        	writeByteToFile(bytes);
+
+        private String matchTemplate(String fileName){
+        	
         	try
             {            
                 Runtime rt = Runtime.getRuntime();
-                Process proc = rt.exec("/home/ec2-user/files/ImageMatching/templateMatch /home/ec2-user/files/templates /tmp/scan.jpg");
+                Process proc = rt.exec(templateCommand + " " + templates + " " + fileName);
                 int exitVal = proc.waitFor();
                 System.out.println("Process exitValue: " + exitVal);
-                if(exitVal == 100){
-                	return "Adobe Reader";
-                }
-                else {
-                	return "Walmart";
-                }
+                return getBrand(exitVal);
             } catch (Throwable t)
             {
                 t.printStackTrace();
@@ -162,15 +152,56 @@ public class ImageMatcher{
         	return null;
         }
         
+        private String matchSift(String fileName) {
+        	try
+            {
+                Runtime rt = Runtime.getRuntime();
+                Process proc = rt.exec( siftCommand + " " + templates + " " + fileName);
+                int exitVal = proc.waitFor();
+                System.out.println("Process exitValue: " + exitVal);
+                return getBrand(exitVal);
+            } catch (Throwable t)
+            {
+                t.printStackTrace();
+            }
+        	return null;
+        }
+        
+		public String match(byte[] bytes){
+        	String fileName = writeByteToFile(bytes);
+        	String resultBrand = "Not Found";
+
+        	if (fileName != null) {
+        	    resultBrand = matchTemplate(fileName);
+        	}
+        	return resultBrand;
+		}
+
+		private String getBrand(int value) {
+			String brandName = "Not Found";
+			if(value == 100) {
+            	brandName = "Adobe Reader";
+            }
+            else {
+            	brandName =  "Walmart";
+            }
+			return brandName;
+		}
+
         private String writeByteToFile(byte[] imageData) {
-	     // Write bytes to tmp file.
-	        final File tmpImageFile = new File("/tmp/scan.jpg");
+	        // Write bytes to tmp file.
+            if(fileNameCounter == 1000) {
+                fileNameCounter = 0;
+            }
+            fileNameCounter++;
+            String tmpFileName = "/tmp/scan_" + fileNameCounter + ".jpg";
+	        final File tmpImageFile = new File(tmpFileName);
 	        FileOutputStream tmpOutputStream = null;
 	        try {
 	            tmpOutputStream = new FileOutputStream(tmpImageFile);
 	            tmpOutputStream.write(imageData);
-	            System.out.println("File successfully written to tmp file");
-	            return "success";
+	            System.out.println("File successfully written to tmp file [" + tmpFileName + "]");
+	            return tmpFileName;
 	        }
 	        catch (FileNotFoundException e) {
 	            System.out.println("FileNotFoundException: " + e);
@@ -181,12 +212,13 @@ public class ImageMatcher{
 	            return null;
 	        }
 	        finally {
-	            if(tmpOutputStream != null)
+	            if(tmpOutputStream != null) {
 	                try {
 	                    tmpOutputStream.close();
 	                } catch (IOException e) {
 	                    System.out.println("IOException: " + e);
 	                }
+	            }
 	        }
         }
 }

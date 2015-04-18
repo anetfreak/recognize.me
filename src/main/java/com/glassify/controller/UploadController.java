@@ -54,7 +54,7 @@ public class UploadController {
                 System.out.println(resultString);
                 //Make a call to the OpenCV module to identify the brand.
                 ImageMatcher matcher = new ImageMatcher();
-                String result_brand = matcher.matchTemplate(bytes);
+                String result_brand = matcher.match(bytes);
                 
                 if(result_brand == "Failed") {
                 	resultString += "\n Not matched with any brand we support.";
