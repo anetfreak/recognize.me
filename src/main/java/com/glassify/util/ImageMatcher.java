@@ -146,7 +146,7 @@ public class ImageMatcher{
         	try
             {            
                 Runtime rt = Runtime.getRuntime();
-                Process proc = rt.exec("/tmp/template /tmp/adobeData/ /tmp/scan.jpg");
+                Process proc = rt.exec("/home/ec2-user/files/ImageMatching/templateMatch /home/ec2-user/files/templates /tmp/scan.jpg");
                 int exitVal = proc.waitFor();
                 System.out.println("Process exitValue: " + exitVal);
                 if(exitVal == 100){
