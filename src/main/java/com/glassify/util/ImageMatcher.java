@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -16,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
@@ -30,26 +30,7 @@ public class ImageMatcher{
 		private static final String templates = "/home/ec2-user/files/templates/";
 		private static final String siftCommand = "/home/ec2-user/files/ImageMatching/siftMatch";
 		private static int fileNameCounter = 1;
-		public static void main(String[] args){
-			ImageMatcher matcher = new ImageMatcher();
-			File file = new File("/opt/project/test_samples/test2.jpg");
-	        FileInputStream fin = null;
-            try {
-				fin = new FileInputStream(file);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
- 
-            byte fileContent[] = new byte[(int)file.length()];
-             
-            try {
-				fin.read(fileContent);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			matcher.matchHarr(fileContent);
-		}
+		private static Logger logger = MyLogger.getLogger();
 		
 		private IplImage convertBtyeToIplImagebyte(byte[] bytes){
 			InputStream in = new ByteArrayInputStream(bytes);
@@ -78,7 +59,7 @@ public class ImageMatcher{
 			}
 			List<String> cascades = getAllCascade(cascades_file);
             while(!cascades.isEmpty()){
-            	//System.out.println(cascades.remove(0));
+            	//logger.info(cascades.remove(0));
                 String result = detect(cascades.remove(0), image);
                 if (result != null)
                 	return result;
@@ -97,13 +78,13 @@ public class ImageMatcher{
                 }
             }
             catch(IOException e){
-                System.out.println("IOException");
+                logger.info("IOException");
             }
             return cascades;
         }
         
         private String detect(String XML_FILE, IplImage src){
-        	//System.out.println("Loading file: " + XML_FILE);
+        	//logger.info("Loading file: " + XML_FILE);
             CvHaarClassifierCascade cascade = new
             CvHaarClassifierCascade(cvLoad(XML_FILE));
             
@@ -120,15 +101,15 @@ public class ImageMatcher{
 
             int total_Faces = sign.total();
             if (total_Faces > 1){
-                //System.out.println("Success : " + XML_FILE);
+                //logger.info("Success : " + XML_FILE);
                 String[] parts=XML_FILE.split("/");
                 if((parts != null) && (parts.length > 0)){
                 	String file = parts[parts.length-1];
-                	System.out.println("File Path: "+ XML_FILE);
+                	logger.info("File Path: "+ XML_FILE);
                 	parts = file.split("[.]");
                 	if((parts != null) && (parts.length > 0)){
                 		file = parts[0];
-                		System.out.println("BrandName : " + file);
+                		logger.info("BrandName : " + file);
                 		return file;
                 	}
                 }
@@ -143,7 +124,7 @@ public class ImageMatcher{
                 Runtime rt = Runtime.getRuntime();
                 Process proc = rt.exec(templateCommand + " " + templates + " " + fileName);
                 int exitVal = proc.waitFor();
-                System.out.println("Process exitValue: " + exitVal);
+                logger.info("Process exitValue: " + exitVal);
                 return getBrand(exitVal);
             } catch (Throwable t)
             {
@@ -158,7 +139,7 @@ public class ImageMatcher{
                 Runtime rt = Runtime.getRuntime();
                 Process proc = rt.exec( siftCommand + " " + templates + " " + fileName);
                 int exitVal = proc.waitFor();
-                System.out.println("Process exitValue: " + exitVal);
+                logger.info("Process exitValue: " + exitVal);
                 return getBrand(exitVal);
             } catch (Throwable t)
             {
@@ -200,15 +181,15 @@ public class ImageMatcher{
 	        try {
 	            tmpOutputStream = new FileOutputStream(tmpImageFile);
 	            tmpOutputStream.write(imageData);
-	            System.out.println("File successfully written to tmp file [" + tmpFileName + "]");
+	            logger.info("File successfully written to tmp file [" + tmpFileName + "]");
 	            return tmpFileName;
 	        }
 	        catch (FileNotFoundException e) {
-	            System.out.println("FileNotFoundException: " + e);
+	            logger.info("FileNotFoundException: " + e);
 	            return null;
 	        }
 	        catch (IOException e) {
-	            System.out.println( "IOException: " + e);
+	            logger.info( "IOException: " + e);
 	            return null;
 	        }
 	        finally {
@@ -216,7 +197,7 @@ public class ImageMatcher{
 	                try {
 	                    tmpOutputStream.close();
 	                } catch (IOException e) {
-	                    System.out.println("IOException: " + e);
+	                    logger.info("IOException: " + e);
 	                }
 	            }
 	        }
