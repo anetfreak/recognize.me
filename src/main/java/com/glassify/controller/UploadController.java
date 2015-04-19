@@ -44,6 +44,8 @@ public class UploadController {
 	
 	@RequestMapping(value="/uploadImage", method=RequestMethod.POST)
 	public @ResponseBody String uploadImage(@RequestParam("file") MultipartFile file) {
+		System.out.println("Got upload request");
+		logger.info("Got upload request");
 		String resultString = "";
 		if (!file.isEmpty()) {
             try {
