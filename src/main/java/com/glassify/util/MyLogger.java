@@ -1,5 +1,6 @@
 package com.glassify.util;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -31,7 +32,8 @@ public class MyLogger {
 	public static PrintWriter getWriter() {
 		try {
 			if(writer == null){ 
-				writer = new PrintWriter("recognizeme.log", "UTF-8");
+				File file = new File("/tmp/recognizeme.log");
+				writer = new PrintWriter(file, "UTF-8");
 				//writer.println("The first line");
 				//writer.println("The second line");
 				//writer.close();

@@ -155,30 +155,31 @@ public class ImageMatcher{
         }
         
 		public String match(byte[] bytes){
-			Writer writer = null;
+			Writer writerq = null;
 
 			try {
-			    writer = new BufferedWriter(new OutputStreamWriter(
-			          new FileOutputStream("filename.txt"), "utf-8"));
-			    writer.write("Something");
+				File file = new File("/tmp/filename.txt");
+			    writerq = new BufferedWriter(new OutputStreamWriter(
+			          new FileOutputStream(file), "utf-8"));
+			    writerq.write("Something");
 			
-				writer.write("in Image match, witing file to disk\n");
+				writerq.write("in Image match, witing file to disk\n");
 	        	String fileName = writeByteToFile(bytes);
-	        	writer.write("file written to disk: " + fileName +"\n");
+	        	writerq.write("file written to disk: " + fileName +"\n");
 	        	String resultBrand = "Not Found";
 	
 	        	if (fileName != null) {
-	            	writer.write("going to do template matching\n");
+	            	writerq.write("going to do template matching\n");
 	        	    resultBrand = matchTemplate(fileName);
-	        	    writer.write("match result: " + resultBrand+ " \n");
+	        	    writerq.write("match result: " + resultBrand+ " \n");
 	        	}
-	        	writer.write("matched Brand: "+resultBrand+"\n");
-	        	writer.close();
+	        	writerq.write("matched Brand: "+resultBrand+"\n");
+	        	writerq.close();
 	        	return resultBrand;
 			} catch (IOException ex) {
 				  // report
 			} finally {
-				   try {writer.close();} catch (Exception ex) {//ignore}
+				   try {writerq.close();} catch (Exception ex) {//ignore}
 			       }
 			}
 			return "Not matched";
