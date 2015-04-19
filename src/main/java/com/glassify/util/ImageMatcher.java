@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -31,6 +32,7 @@ public class ImageMatcher{
 		private static final String siftCommand = "/home/ec2-user/files/ImageMatching/siftMatch";
 		private static int fileNameCounter = 1;
 		private static Logger logger = Logger.getLogger(ImageMatcher.class.getName());
+		private static PrintWriter writer = MyLogger.getWriter();
 		
 		private IplImage convertBtyeToIplImagebyte(byte[] bytes){
 			InputStream in = new ByteArrayInputStream(bytes);
@@ -125,6 +127,7 @@ public class ImageMatcher{
                 Process proc = rt.exec(templateCommand + " " + templates + " " + fileName);
                 int exitVal = proc.waitFor();
                 logger.info("Process exitValue: " + exitVal);
+                writer.write("Process exitValue: " + exitVal + "\n");
                 return getBrand(exitVal);
             } catch (Throwable t)
             {
@@ -149,12 +152,18 @@ public class ImageMatcher{
         }
         
 		public String match(byte[] bytes){
+			
+			writer.write("in Image match, witing file to disk\n");
         	String fileName = writeByteToFile(bytes);
+        	writer.write("file written to disk: " + fileName +"\n");
         	String resultBrand = "Not Found";
 
         	if (fileName != null) {
+            	writer.write("going to do template matching\n");
         	    resultBrand = matchTemplate(fileName);
+        	    writer.write("match result: " + resultBrand+ " \n");
         	}
+        	writer.write("matched Brand: "+resultBrand+"\n");
         	return resultBrand;
 		}
 
