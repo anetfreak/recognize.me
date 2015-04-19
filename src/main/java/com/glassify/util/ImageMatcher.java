@@ -149,7 +149,6 @@ public class ImageMatcher{
         }
         
 		public String match(byte[] bytes){
-			logger = MyLogger.getLogger();
         	String fileName = writeByteToFile(bytes);
         	String resultBrand = "Not Found";
 
