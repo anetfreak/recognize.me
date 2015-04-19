@@ -171,6 +171,7 @@ public class ImageMatcher{
 
         private String writeByteToFile(byte[] imageData) {
 	        // Write bytes to tmp file.
+        	System.out.println("Writing image to disk");
             if(fileNameCounter == 1000) {
                 fileNameCounter = 0;
             }
