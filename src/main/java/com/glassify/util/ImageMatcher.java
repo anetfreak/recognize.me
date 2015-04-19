@@ -30,7 +30,7 @@ public class ImageMatcher{
 		private static final String templates = "/home/ec2-user/files/templates/";
 		private static final String siftCommand = "/home/ec2-user/files/ImageMatching/siftMatch";
 		private static int fileNameCounter = 1;
-		private static Logger logger = MyLogger.getLogger();
+		private static Logger logger = Logger.getLogger(ImageMatcher.class.getName());
 		
 		private IplImage convertBtyeToIplImagebyte(byte[] bytes){
 			InputStream in = new ByteArrayInputStream(bytes);
@@ -149,6 +149,7 @@ public class ImageMatcher{
         }
         
 		public String match(byte[] bytes){
+			logger = MyLogger.getLogger();
         	String fileName = writeByteToFile(bytes);
         	String resultBrand = "Not Found";
 

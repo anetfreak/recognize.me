@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.glassify.facade.CredentialFacade;
 import com.glassify.util.ImageMatcher;
 import com.glassify.util.MirrorClient;
-import com.glassify.util.MyLogger;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.services.mirror.model.TimelineItem;
 
@@ -41,7 +40,7 @@ public class UploadController {
 		return "Success";
 	}
 	
-	private static Logger logger = MyLogger.getLogger();
+	private static Logger logger = Logger.getLogger(UploadController.class.getName());
 	
 	@RequestMapping(value="/uploadImage", method=RequestMethod.POST)
 	public @ResponseBody String uploadImage(@RequestParam("file") MultipartFile file) {
