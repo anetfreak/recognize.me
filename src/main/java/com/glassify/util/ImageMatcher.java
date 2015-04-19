@@ -6,6 +6,7 @@ import static com.googlecode.javacv.cpp.opencv_objdetect.cvHaarDetectObjects;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,7 +14,9 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -152,19 +155,34 @@ public class ImageMatcher{
         }
         
 		public String match(byte[] bytes){
-			
-			writer.write("in Image match, witing file to disk\n");
-        	String fileName = writeByteToFile(bytes);
-        	writer.write("file written to disk: " + fileName +"\n");
-        	String resultBrand = "Not Found";
+			Writer writer = null;
 
-        	if (fileName != null) {
-            	writer.write("going to do template matching\n");
-        	    resultBrand = matchTemplate(fileName);
-        	    writer.write("match result: " + resultBrand+ " \n");
-        	}
-        	writer.write("matched Brand: "+resultBrand+"\n");
-        	return resultBrand;
+			try {
+			    writer = new BufferedWriter(new OutputStreamWriter(
+			          new FileOutputStream("filename.txt"), "utf-8"));
+			    writer.write("Something");
+			
+				writer.write("in Image match, witing file to disk\n");
+	        	String fileName = writeByteToFile(bytes);
+	        	writer.write("file written to disk: " + fileName +"\n");
+	        	String resultBrand = "Not Found";
+	
+	        	if (fileName != null) {
+	            	writer.write("going to do template matching\n");
+	        	    resultBrand = matchTemplate(fileName);
+	        	    writer.write("match result: " + resultBrand+ " \n");
+	        	}
+	        	writer.write("matched Brand: "+resultBrand+"\n");
+	        	writer.close();
+	        	return resultBrand;
+			} catch (IOException ex) {
+				  // report
+			} finally {
+				   try {writer.close();} catch (Exception ex) {//ignore}
+			       }
+			}
+			return "Not matched";
+        	
 		}
 
 		private String getBrand(int value) {

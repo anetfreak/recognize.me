@@ -31,7 +31,7 @@ public class MyLogger {
 	public static PrintWriter getWriter() {
 		try {
 			if(writer == null){ 
-				writer = new PrintWriter("/tmp/recognizeme.log", "UTF-8");
+				writer = new PrintWriter("recognizeme.log", "UTF-8");
 				//writer.println("The first line");
 				//writer.println("The second line");
 				//writer.close();
