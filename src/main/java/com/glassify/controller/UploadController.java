@@ -1,8 +1,6 @@
 package com.glassify.controller;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.glassify.facade.CredentialFacade;
 import com.glassify.util.ImageMatcher;
 import com.glassify.util.MirrorClient;
+import com.glassify.util.MyLogger;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.services.mirror.model.TimelineItem;
 
@@ -41,6 +40,7 @@ public class UploadController {
 	}
 	
 	private static Logger logger = Logger.getLogger(UploadController.class.getName());
+	private static PrintWriter writer = MyLogger.getWriter();
 	
 	@RequestMapping(value="/uploadImage", method=RequestMethod.POST)
 	public @ResponseBody String uploadImage(@RequestParam("file") MultipartFile file) {
@@ -50,9 +50,9 @@ public class UploadController {
 		if (!file.isEmpty()) {
             try {
                 byte[] bytes = file.getBytes();
-                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(file.getName())));
-                stream.write(bytes);
-                stream.close();
+                //BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(file.getName())));
+                //stream.write(bytes);
+                //stream.close();
                 
                 resultString += "You successfully uploaded " + file.getName() + "! The file size was " + file.getSize()/1000 + " Kb.";
                 logger.info(resultString);

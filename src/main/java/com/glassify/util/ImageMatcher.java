@@ -6,7 +6,6 @@ import static com.googlecode.javacv.cpp.opencv_objdetect.cvHaarDetectObjects;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,9 +13,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -155,35 +152,43 @@ public class ImageMatcher{
         }
         
 		public String match(byte[] bytes){
-			Writer writerq = null;
+				String tmpFileName = "/tmp/filename.txt";
+				final File tmpImageFile = new File(tmpFileName);
+		        FileOutputStream tmpOutputStream = null;
+		        try {
+		            tmpOutputStream = new FileOutputStream(tmpImageFile);
+		            tmpOutputStream.write("in Image match, witing file to disk\n".getBytes());
+		        	String fileName = writeByteToFile(bytes);
+		        	tmpOutputStream.write("file written to disk: \n".getBytes());
+		        	String resultBrand = "Not Found";
+		
+		        	if (fileName != null) {
+		        		tmpOutputStream.write("going to do template matching\n".getBytes());
+		        	    resultBrand = matchTemplate(fileName);
+		        	    tmpOutputStream.write("match result: \n".getBytes());
+		        	}
+		        	tmpOutputStream.write("matched Brand: \n".getBytes());
+		        	tmpOutputStream.close();
+		        	return resultBrand;
 
-			try {
-				File file = new File("/tmp/filename.txt");
-			    writerq = new BufferedWriter(new OutputStreamWriter(
-			          new FileOutputStream(file), "utf-8"));
-			    writerq.write("Something");
-			
-				writerq.write("in Image match, witing file to disk\n");
-	        	String fileName = writeByteToFile(bytes);
-	        	writerq.write("file written to disk: " + fileName +"\n");
-	        	String resultBrand = "Not Found";
-	
-	        	if (fileName != null) {
-	            	writerq.write("going to do template matching\n");
-	        	    resultBrand = matchTemplate(fileName);
-	        	    writerq.write("match result: " + resultBrand+ " \n");
-	        	}
-	        	writerq.write("matched Brand: "+resultBrand+"\n");
-	        	writerq.close();
-	        	return resultBrand;
-			} catch (IOException ex) {
-				  // report
-			} finally {
-				   try {writerq.close();} catch (Exception ex) {//ignore}
-			       }
-			}
-			return "Not matched";
-        	
+		        }
+		        catch (FileNotFoundException e) {
+		            logger.info("FileNotFoundException: " + e);
+		            return null;
+		        }
+		        catch (IOException e) {
+		            logger.info( "IOException: " + e);
+		            return null;
+		        }
+		        finally {
+		            if(tmpOutputStream != null) {
+		                try {
+		                    tmpOutputStream.close();
+		                } catch (IOException e) {
+		                    logger.info("IOException: " + e);
+		                }
+		            }
+		        }
 		}
 
 		private String getBrand(int value) {
