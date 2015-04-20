@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.glassify.domain.MyCredential;
 import com.glassify.facade.CredentialFacade;
 import com.glassify.util.ImageMatcher;
 import com.glassify.util.MirrorClient;
 import com.glassify.util.MyLogger;
+import com.glassify.util.PostRequestUtil;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.services.mirror.model.TimelineItem;
 
@@ -55,7 +57,6 @@ public class UploadController {
                 //stream.close();
                 
                 resultString += "You successfully uploaded " + file.getName() + "! The file size was " + file.getSize()/1000 + " Kb.";
-                logger.info(resultString);
                 //Make a call to the OpenCV module to identify the brand.
                 ImageMatcher matcher = new ImageMatcher();
                 String result_brand = matcher.match(bytes);
@@ -67,44 +68,50 @@ public class UploadController {
                 }
                 
                 resultString += "\n Match: "+ result_brand;
-                logger.info(resultString);
                 
                 //Make a call AdServer with the use and brand information to fetch the ad.
-            //    PostRequestUtil request = new PostRequestUtil();
-            //    request.setUrl("http://localhost:8080/retrieveAd"); //TODO remove hard coded Url
-            //    request.setStrValues("brandName=Dell&latitude=1.1&longitude=5.5&category=Electronics"); //TODO remove hardcoded
+                PostRequestUtil request = new PostRequestUtil();
+                request.setUrl("http://localhost:8080/adserver/retrieveAd"); //TODO remove hard coded Url
+                request.setStrValues("brandName="+result_brand+"&latitude=1&longitude=5&category=Electronics"); //TODO remove hardcoded
                 
-//                String AdResponse = request.post();
-//                //TODO - check if response is fine
-//                resultString += "\nResponse from AdServer: " + AdResponse;
-                
-                logger.info(resultString);
+                String AdResponse = request.post();
+                //TODO - check if response is fine
+                resultString += "\nResponse from AdServer: " + AdResponse;
                 
                 //TODO - Parse the response
                 resultString += "\nParsed Ad Response: ";
-                logger.info(resultString);
                 
                 //TODO - Make Ad to be sent to glass
                 resultString += "\n Ad sending to glass: ";
-                logger.info(resultString);
-                
+                Credential credential = null;
                 //Get user Credential
-                Credential credential = credentialFacade.getCredentialForUser("amit.agrawal@sjsu.edu").getCredential();
+                if (credentialFacade != null) {
+                	MyCredential myCredential = credentialFacade.getCredentialForUser("amit.agrawal@sjsu.edu");
+                	if(myCredential != null) {
+                		credential = credentialFacade.getCredentialForUser("amit.agrawal@sjsu.edu").getCredential();
+                    }
+                	else {
+                		logger.info("get credential return null");
+                	}
+                }
+                else {
+                	logger.info("get credential for user returned null");
+                }
+                
                 resultString += "\nFetch User Credential Success ";
-                logger.info(resultString);
                 //Post Ad to Glass Mirror
                 MirrorClient mirrorClient = new MirrorClient();
-                TimelineItem timelineItem = mirrorClient.createTimeLineItemWithText("Ad for Brand : result_brand");
+                TimelineItem timelineItem = mirrorClient.createTimeLineItemWithText("Ad for Brand :"+ result_brand + "\n"+AdResponse);
                 mirrorClient.insertTimelineItem(credential, timelineItem);
                 
-                logger.info("You successfully uploaded " + 
-                		file.getName() + "! The file size was " + 
-                			file.getSize()/1000 + " Kb." +
-                			"\n Match: "+ result_brand);
                 return "You successfully uploaded " + file.getName() + "! The file size was " + file.getSize()/1000 + " Kb.";
             } catch (Exception e) {
             	e.printStackTrace();
                 return "You failed to upload " + file.getName() + " => " + e.getMessage();
+            }
+            finally{
+            	logger.info("Final Result string: ");
+            	logger.info(resultString);
             }
         } else {
         	logger.info("Fiel is empty");

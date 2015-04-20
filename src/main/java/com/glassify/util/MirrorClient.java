@@ -37,7 +37,7 @@ import com.google.common.io.ByteStreams;
  * @author Amit Agrawal
  */
 public class MirrorClient {
-  //private static final Logger LOG = Logger.getLogger(MirrorClient.class.getSimpleName());
+	private static Logger logger = Logger.getLogger(MirrorClient.class.getSimpleName());
 
   //Main for testing
   public static void main(String[] args){
@@ -67,9 +67,24 @@ public class MirrorClient {
 	    return timelineItem;
 	  }
   
-  public Mirror getMirror(Credential credential) {
-    return new Mirror.Builder(new NetHttpTransport(), new JacksonFactory(), credential)
-        .setApplicationName("Glass AdServer").build();
+  public Mirror getMirror(final Credential credential) {
+    return new Mirror.Builder(new NetHttpTransport(), new JacksonFactory(), credential)./*setHttpRequestInitializer((new HttpRequestInitializer(){
+    	@Override
+        public void initialize(HttpRequest request)
+                throws IOException {
+    		if(request != null) {
+    			if(credential != null){
+    				request.getHeaders().put("Authorization", "Bearer " + credential.getAccessToken());
+    			}
+    			else{
+    				logger.info("credential is null");
+    			}
+    		}
+    		else {
+    			logger.info("request is null");
+    		}
+        }
+    })).*/setApplicationName("Recognize me").build();
   }
 
   /**
@@ -109,7 +124,7 @@ public class MirrorClient {
    * @param attachmentInputStream input stream for the attachment (or null if
    *                              none)
    */
-  public void insertTimelineItem(Credential credential, TimelineItem item,
+  public void insertTimelineItem(final Credential credential, TimelineItem item,
       String attachmentContentType, InputStream attachmentInputStream) throws IOException {
     insertTimelineItem(credential, item, attachmentContentType,
         ByteStreams.toByteArray(attachmentInputStream));

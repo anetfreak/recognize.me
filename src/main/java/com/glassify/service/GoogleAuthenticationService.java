@@ -253,10 +253,10 @@ public class GoogleAuthenticationService {
 			Userinfoplus userInfo = getUserInfo(credentials);
 			userId = userInfo.getId();
 			if (credentials.getRefreshToken() != null) {
-				storeCredentials(userId, credentials);
+				storeCredentials(state, credentials);
 				return credentials;
 			} else {
-				credentials = getStoredCredentials(userId);
+				credentials = getStoredCredentials(state);
 				if (credentials != null && credentials.getRefreshToken() != null) {
 					return credentials;
 				}

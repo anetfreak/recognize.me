@@ -17,14 +17,16 @@ public class PostRequestUtil {
 	
 	    writer.write(strValues);
 	    writer.flush();
+	    String response = "";
 	    String line;
 	    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 	    while ((line = reader.readLine()) != null) {
 	      System.out.println(line);
+	      response+= line;
 	    }
 	    writer.close();
 	    reader.close();
-	    return line;
+	    return response;
   	}
 
 	public String getUrl() {

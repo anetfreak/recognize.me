@@ -27,8 +27,8 @@ import com.googlecode.javacv.cpp.opencv_objdetect.CvHaarClassifierCascade;
 
 public class ImageMatcher{
 		private static final String cascades_file= "/opt/project/cascades.xml";
-		private static final String templateCommand = "/home/ec2-user/files/ImageMatching/templateMatch";
-		private static final String templates = "/home/ec2-user/files/templates/";
+		private static final String templateCommand = "/Users/amitagra/Downloads/workspace/opencv/machinelearning/template";
+		private static final String templates = "/Users/amitagra/Downloads/workspace/opencv/machinelearning/templates/";
 		private static final String siftCommand = "/home/ec2-user/files/ImageMatching/siftMatch";
 		private static int fileNameCounter = 1;
 		private static Logger logger = Logger.getLogger(ImageMatcher.class.getName());
