@@ -6,6 +6,6 @@ import com.glassify.domain.Brand;
 
 public interface BrandDao {
 
-	public void saveBrand(Brand brand);
+	public void saveBrand(Brand brand) throws Exception;
 	public List<Brand> getAllBrands();
 }

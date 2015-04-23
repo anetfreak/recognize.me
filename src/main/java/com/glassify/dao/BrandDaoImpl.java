@@ -1,5 +1,7 @@
 package com.glassify.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,9 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+
 import com.glassify.domain.Brand;
 
 @Component
@@ -60,6 +64,31 @@ public class BrandDaoImpl implements BrandDao {
 			brandList.add(brand);
 		}
 		return brandList;
+	}
+	
+	/**
+	 * Method to get brand details by name
+	 * @param name
+	 * @return
+	 */
+	public Brand getBrandByName(final String name){
+		String query = "select * from ad_brand where name = ?";	
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		Brand brand = jdbcTemplate.queryForObject(query, new Object[] { name },
+				new RowMapper<Brand>() {
+					Brand brand = new Brand();
+					public Brand mapRow(ResultSet rs, int rowNum)
+							throws SQLException {
+						brand.setId(rs.getInt("id"));
+						brand.setName(name);
+						brand.setDesc(rs.getString("description"));
+						brand.setDomain(rs.getString("domain"));
+						brand.setWebsite(rs.getString("website"));
+						brand.setBrandImage(rs.getString("brandImage"));
+						return brand;
+					}
+				});
+		return brand;
 	}
 
 }

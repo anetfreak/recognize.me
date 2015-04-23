@@ -1,5 +1,8 @@
 package com.glassify.controller;
 
+import java.io.File;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,12 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.glassify.domain.Brand;
 import com.glassify.facade.BrandFacade;
-
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Handles requests for the brand module pages.
@@ -42,9 +39,9 @@ public class BrandController {
 			@RequestParam("category") String category,
 			@RequestParam("path") String path,
 			@RequestParam("description") String description,
-			@RequestParam(value = "brandFiles", required = false) MultipartFile brandImage) {
+			@RequestParam(value = "brandFiles", required = false) MultipartFile brandImage) throws Exception{
 		Brand brand = new Brand();
-		brand.setName(brandName);
+		brand.setName(brandName.toUpperCase());
 		brand.setWebsite(url);
 		brand.setDomain(category);
 		brand.setDesc(description);

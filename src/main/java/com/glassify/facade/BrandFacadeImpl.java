@@ -14,7 +14,7 @@ public class BrandFacadeImpl implements BrandFacade{
 	@Autowired
 	private BrandDao brandDao;
 	
-	public void saveBrand(Brand brand){
+	public void saveBrand(Brand brand) throws Exception{
 		brandDao.saveBrand(brand);
 	}
 	
