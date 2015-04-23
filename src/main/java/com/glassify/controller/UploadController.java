@@ -15,11 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.glassify.domain.MyCredential;
 import com.glassify.facade.CredentialFacade;
 import com.glassify.util.ImageMatcher;
-import com.glassify.util.MirrorClient;
 import com.glassify.util.MyLogger;
 import com.glassify.util.PostRequestUtil;
 import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.services.mirror.model.TimelineItem;
 
 /**
  * Handles requests for the upload module pages. To be used without the front-end.
@@ -99,10 +97,10 @@ public class UploadController {
                 }
                 
                 resultString += "\nFetch User Credential Success ";
-                //Post Ad to Glass Mirror
-                MirrorClient mirrorClient = new MirrorClient();
-                TimelineItem timelineItem = mirrorClient.createTimeLineItemWithText("Ad for Brand :"+ result_brand + "\n"+AdResponse);
-                mirrorClient.insertTimelineItem(credential, timelineItem);
+                //Post Ad to Glass Mirror TODO uncomment below lines
+                //MirrorClient mirrorClient = new MirrorClient();
+                //TimelineItem timelineItem = mirrorClient.createTimeLineItemWithText("Ad for Brand :"+ result_brand + "\n"+AdResponse);
+                //mirrorClient.insertTimelineItem(credential, timelineItem);
                 
                 return "You successfully uploaded " + file.getName() + "! The file size was " + file.getSize()/1000 + " Kb.";
             } catch (Exception e) {

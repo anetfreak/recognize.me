@@ -29,7 +29,8 @@ public class ImageMatcher{
 		private static final String cascades_file= "/opt/project/cascades.xml";
 		private static final String templateCommand = "/Users/amitagra/Downloads/workspace/opencv/machinelearning/template";
 		private static final String templates = "/Users/amitagra/Downloads/workspace/opencv/machinelearning/templates/";
-		private static final String siftCommand = "/home/ec2-user/files/ImageMatching/siftMatch";
+		private static final String templates_sift = "/Users/amitagra/Downloads/workspace/opencv/machinelearning/templates_sift/";
+		private static final String siftCommand = "/Users/amitagra/Downloads/workspace/opencv/machinelearning/siftMatch";
 		private static int fileNameCounter = 1;
 		private static Logger logger = Logger.getLogger(ImageMatcher.class.getName());
 		private static PrintWriter writer = MyLogger.getWriter();
@@ -126,6 +127,9 @@ public class ImageMatcher{
                 Runtime rt = Runtime.getRuntime();
                 Process proc = rt.exec(templateCommand + " " + templates + " " + fileName);
                 int exitVal = proc.waitFor();
+                if(exitVal == 0){
+                	return matchSift(fileName);
+                }
                 logger.info("Process exitValue: " + exitVal);
                 writer.write("Process exitValue: " + exitVal + "\n");
                 return getBrand(exitVal);
@@ -140,8 +144,9 @@ public class ImageMatcher{
         	try
             {
                 Runtime rt = Runtime.getRuntime();
-                Process proc = rt.exec( siftCommand + " " + templates + " " + fileName);
+                Process proc = rt.exec( siftCommand + " " + templates_sift + " " + fileName);
                 int exitVal = proc.waitFor();
+                
                 logger.info("Process exitValue: " + exitVal);
                 return getBrand(exitVal);
             } catch (Throwable t)
@@ -164,7 +169,7 @@ public class ImageMatcher{
 		
 		        	if (fileName != null) {
 		        		tmpOutputStream.write("going to do template matching\n".getBytes());
-		        	    resultBrand = matchTemplate(fileName);
+		        	    resultBrand = matchSift(fileName);
 		        	    tmpOutputStream.write("match result: \n".getBytes());
 		        	}
 		        	tmpOutputStream.write("matched Brand: \n".getBytes());
@@ -193,11 +198,17 @@ public class ImageMatcher{
 
 		private String getBrand(int value) {
 			String brandName = "Not Found";
-			if(value == 100) {
+			if(value == 1) {
             	brandName = "Adobe Reader";
             }
-            else {
+            else if(value == 2) {
             	brandName =  "Walmart";
+            }
+            else if(value == 3) {
+            	brandName =  "Starbucks Coffee";
+            }
+            else if(value == 4) {
+            	brandName =  "Amazon";
             }
 			return brandName;
 		}
