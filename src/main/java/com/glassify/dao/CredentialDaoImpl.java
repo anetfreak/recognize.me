@@ -51,7 +51,7 @@ public class CredentialDaoImpl implements CredentialDao {
 						
 						Credential credential = new Credential(BearerToken.authorizationHeaderAccessMethod());
 						credential.setAccessToken(rs.getString("access_token"));
-						//credential.setRefreshToken(rs.getString("refresh_token"));
+						credential.setRefreshToken(rs.getString("refresh_token"));
 						myCredential.setCredential(credential);
 						
 						return myCredential;
