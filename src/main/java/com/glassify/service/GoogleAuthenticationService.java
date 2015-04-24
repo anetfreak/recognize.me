@@ -252,6 +252,8 @@ public class GoogleAuthenticationService {
 			credentials = exchangeCode(authorizationCode);
 			Userinfoplus userInfo = getUserInfo(credentials);
 			userId = userInfo.getId();
+			System.out.println(userInfo.getEmail());
+			System.out.println(userInfo.getName());
 			if (credentials.getRefreshToken() != null) {
 				storeCredentials(state, credentials);
 				return credentials;

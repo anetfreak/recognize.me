@@ -2,6 +2,8 @@ package com.glassify.controller;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -31,11 +33,13 @@ public class AuthenticationController {
 	
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping("/oauth2callback")
-	public String identifyClient(@RequestParam(value = "code", required = false) String code,
-			@RequestParam(value = "state", required = false) String state) {
+	public void identifyClient(@RequestParam(value = "code", required = false) String code,
+			@RequestParam(value = "state", required = false) String state, 
+			HttpServletResponse response) {
 		try {
 			GoogleAuthenticationService authService = new GoogleAuthenticationService(credentialFacade);
 			authService.getCredentials(code, state);
+			response.sendRedirect("/");
 		} catch (CodeExchangeException e) {
 			e.printStackTrace();
 		} catch (NoRefreshTokenException e) {
@@ -44,7 +48,6 @@ public class AuthenticationController {
 			e.printStackTrace();
 		}
 		
-		return "redirect:/";
 	}
 	
 }
