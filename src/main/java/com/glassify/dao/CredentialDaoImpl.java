@@ -22,11 +22,12 @@ public class CredentialDaoImpl implements CredentialDao {
 	private DataSource dataSource;
 	
 	public void saveCredential(MyCredential myCredential) {
-		String query = "insert into credential (user_id, access_token, refresh_token) values (?,?,?)";
+		String query = "insert into credential (user_id, access_token, refresh_token) values (?,?,?)"
+				+ "on duplicate key update access_token = ?, refresh_token = ?";
 
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-		Object[] args = new Object[] { myCredential.getUserId(), myCredential.getCredential().getAccessToken(), myCredential.getCredential().getRefreshToken() };
+		Object[] args = new Object[] { myCredential.getUserId(), myCredential.getCredential().getAccessToken(), myCredential.getCredential().getRefreshToken(), myCredential.getCredential().getAccessToken(), myCredential.getCredential().getRefreshToken() };
 
 		int out = jdbcTemplate.update(query, args);
 
@@ -57,18 +58,5 @@ public class CredentialDaoImpl implements CredentialDao {
 					}
 				});
 		}
-
-//	public void deleteAdById(int id) {
-//
-//		String query = "delete from advertisement where id=?";
-//		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-//
-//		int out = jdbcTemplate.update(query, id);
-//		if (out != 0) {
-//			System.out.println("Ad deleted with id=" + id);
-//		} else {
-//			System.out.println("No Ad found with id=" + id);
-//		}
-//	}
 
 }
