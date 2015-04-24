@@ -2,7 +2,6 @@ package com.glassify.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,7 @@ public class BrandDaoImpl implements BrandDao {
 	@Autowired
 	private DataSource dataSource;
 
-	public void saveBrand(Brand brand) {
+	public void saveBrand(Brand brand) throws Exception {
 
 		String query = "insert into ad_brand (id, name, website, domain, description, brandImage) values (?,?,?,?,?,?)";
 
@@ -31,19 +30,14 @@ public class BrandDaoImpl implements BrandDao {
 		Object[] args = new Object[] { brand.getId(), brand.getName(), brand.getWebsite(),
 				brand.getDomain(), brand.getDesc(), brand.getBrandImage() };
 		
-		try {
 			int out = jdbcTemplate.update(query, args);
 
 			if (out != 0) {
 				System.out.println("Brand saved with id= " + brand.getId());
 			} else {
 				System.out.println("Brand save failed with id= " + brand.getId());
+				throw new Exception("Brand could not be added to database.");
 			}
-		} catch (Exception exception) {
-			System.out
-					.println("Error encountered in saving the brand details to the database");
-			exception.printStackTrace();
-		}
 	}
 	
 	public List<Brand> getAllBrands(){

@@ -109,4 +109,10 @@ public class BrandController {
 		ModelAndView modelAndView = new ModelAndView("successBrand");
 		return modelAndView;
 	}
+	
+	@RequestMapping("/errorBrand")
+	public ModelAndView getErrorMessage() {
+		ModelAndView modelAndView = new ModelAndView("errorBrand");
+		return modelAndView;
+	}
 }
