@@ -17,6 +17,8 @@ package com.glassify.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.api.client.auth.oauth2.Credential;
@@ -27,6 +29,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.mirror.Mirror;
 import com.google.api.services.mirror.model.Attachment;
+import com.google.api.services.mirror.model.MenuItem;
 import com.google.api.services.mirror.model.NotificationConfig;
 import com.google.api.services.mirror.model.TimelineItem;
 import com.google.common.io.ByteStreams;
@@ -58,33 +61,25 @@ public class MirrorClient {
       //  + "test");
   }
   
+  private List<MenuItem> getMenuItems() {
+	  List<MenuItem> menuItems = new ArrayList<MenuItem>();
+	  MenuItem delOption = new MenuItem().setAction("DELETE");
+	  MenuItem readOption = new MenuItem().setAction("READ_ALOUD");
+	  menuItems.add(delOption);
+	  menuItems.add(readOption);
+	  return menuItems;
+  }
   
   public TimelineItem createTimeLineItemWithText(String text){
 	    TimelineItem timelineItem = new TimelineItem();
 	    timelineItem.setText(text);
 	    timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
-	    
+	    timelineItem.setMenuItems(getMenuItems());    
 	    return timelineItem;
 	  }
   
   public Mirror getMirror(final Credential credential) {
-    return new Mirror.Builder(new NetHttpTransport(), new JacksonFactory(), credential)./*setHttpRequestInitializer((new HttpRequestInitializer(){
-    	@Override
-        public void initialize(HttpRequest request)
-                throws IOException {
-    		if(request != null) {
-    			if(credential != null){
-    				request.getHeaders().put("Authorization", "Bearer " + credential.getAccessToken());
-    			}
-    			else{
-    				logger.info("credential is null");
-    			}
-    		}
-    		else {
-    			logger.info("request is null");
-    		}
-        }
-    })).*/setApplicationName("Recognize me").build();
+    return new Mirror.Builder(new NetHttpTransport(), new JacksonFactory(), credential).setApplicationName("Recognize me").build();
   }
 
   /**
