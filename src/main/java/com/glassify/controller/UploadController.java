@@ -43,7 +43,15 @@ public class UploadController {
 	private static PrintWriter writer = MyLogger.getWriter();
 	
 	@RequestMapping(value="/uploadImage", method=RequestMethod.POST)
-	public @ResponseBody String uploadImage(@RequestParam("file") MultipartFile file) {
+	public @ResponseBody String uploadImage(@RequestParam("file") MultipartFile file,
+			@RequestParam("email") String email,
+			@RequestParam("latitude") float latitude,
+			@RequestParam("longitude") float longitude) {
+		
+		System.out.println("Latitude - " + latitude);
+		System.out.println("Longitude - " + longitude);
+		System.out.println("Email - " + email);
+		
 		System.out.println("Got upload request");
 		logger.info("Got upload request");
 		String resultString = "";
