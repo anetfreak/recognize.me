@@ -45,8 +45,8 @@ public class UploadController {
 	@RequestMapping(value="/uploadImage", method=RequestMethod.POST)
 	public @ResponseBody String uploadImage(@RequestParam("file") MultipartFile file,
 			@RequestParam("email") String email,
-			@RequestParam("latitude") float latitude,
-			@RequestParam("longitude") float longitude) {
+			@RequestParam("latitude") String latitude,
+			@RequestParam("longitude") String longitude) {
 		
 		System.out.println("Latitude - " + latitude);
 		System.out.println("Longitude - " + longitude);
