@@ -255,10 +255,10 @@ public class GoogleAuthenticationService {
 			System.out.println(userInfo.getEmail());
 			System.out.println(userInfo.getName());
 			if (credentials.getRefreshToken() != null) {
-				storeCredentials(state, credentials);
+				storeCredentials(userInfo.getEmail(), credentials);
 				return credentials;
 			} else {
-				credentials = getStoredCredentials(state);
+				credentials = getStoredCredentials(userInfo.getEmail());
 				if (credentials != null && credentials.getRefreshToken() != null) {
 					return credentials;
 				}
