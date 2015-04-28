@@ -43,17 +43,23 @@ public class UploadController {
 	private static PrintWriter writer = MyLogger.getWriter();
 	
 	@RequestMapping(value="/uploadImage", method=RequestMethod.POST)
-	public @ResponseBody String uploadImage(@RequestParam("file") MultipartFile file,
-			@RequestParam("email") String email,
-			@RequestParam("latitude") String latitude,
-			@RequestParam("longitude") String longitude) {
+	public @ResponseBody String uploadImage(
+			@RequestParam("file") MultipartFile file,
+			@RequestParam("email") MultipartFile email,
+			@RequestParam("latitude") MultipartFile latitude,
+			@RequestParam("longitude") MultipartFile longitude)
+			{
 		
-		System.out.println("Latitude - " + latitude);
-		System.out.println("Longitude - " + longitude);
-		System.out.println("Email - " + email);
+		System.out.println("Latitude - " + latitude.getOriginalFilename());
+		System.out.println("Longitude - " + longitude.getOriginalFilename());
+		System.out.println("Email - " + email.getOriginalFilename());
+		String userId = email.getOriginalFilename();
+		String userLat = latitude.getOriginalFilename();
+		String userLong = longitude.getOriginalFilename();
 		
 		System.out.println("Got upload request");
 		logger.info("Got upload request");
+		logger.info("Email");
 		String resultString = "";
 		if (!file.isEmpty()) {
             try {
@@ -78,7 +84,7 @@ public class UploadController {
                 //Make a call AdServer with the use and brand information to fetch the ad.
                 PostRequestUtil request = new PostRequestUtil();
                 request.setUrl("http://localhost:8080/adserver/retrieveAd"); //TODO remove hard coded Url
-                request.setStrValues("brandName="+result_brand+"&latitude=1&longitude=5&category=Electronics"); //TODO remove hardcoded
+                request.setStrValues("brandName="+result_brand+"&latitude=" + userLat +"&longitude=" + userLong + "&category=Electronics"); //TODO remove hardcoded
                 
                 String AdResponse = request.post();
                 //TODO - check if response is fine
@@ -92,9 +98,9 @@ public class UploadController {
                 Credential credential = null;
                 //Get user Credential
                 if (credentialFacade != null) {
-                	MyCredential myCredential = credentialFacade.getCredentialForUser("amit.agrawal@sjsu.edu");
+                	MyCredential myCredential = credentialFacade.getCredentialForUser(userId);
                 	if(myCredential != null) {
-                		credential = credentialFacade.getCredentialForUser("amit.agrawal@sjsu.edu").getCredential();
+                		credential = credentialFacade.getCredentialForUser(userId).getCredential();
                     }
                 	else {
                 		logger.info("get credential return null");
