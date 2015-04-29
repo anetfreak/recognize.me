@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,9 +16,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.glassify.domain.MyCredential;
 import com.glassify.facade.CredentialFacade;
 import com.glassify.util.ImageMatcher;
+import com.glassify.util.MirrorClient;
 import com.glassify.util.MyLogger;
 import com.glassify.util.PostRequestUtil;
 import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.services.mirror.model.TimelineItem;
 
 /**
  * Handles requests for the upload module pages. To be used without the front-end.
@@ -49,26 +52,21 @@ public class UploadController {
 			@RequestParam("latitude") MultipartFile latitude,
 			@RequestParam("longitude") MultipartFile longitude)
 			{
+		String resultString = "";
+		resultString += "\nGot upload request";
+		resultString += "\nLatitude - " + latitude.getOriginalFilename();
+		resultString += "\nLongitude - " + longitude.getOriginalFilename();
+		resultString += "\nEmail - " + email.getOriginalFilename();
 		
-		System.out.println("Latitude - " + latitude.getOriginalFilename());
-		System.out.println("Longitude - " + longitude.getOriginalFilename());
-		System.out.println("Email - " + email.getOriginalFilename());
 		String userId = email.getOriginalFilename();
 		String userLat = latitude.getOriginalFilename();
 		String userLong = longitude.getOriginalFilename();
-		
-		System.out.println("Got upload request");
-		logger.info("Got upload request");
-		logger.info("Email");
-		String resultString = "";
+
 		if (!file.isEmpty()) {
             try {
-                byte[] bytes = file.getBytes();
-                //BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(file.getName())));
-                //stream.write(bytes);
-                //stream.close();
+                byte[] bytes = file.getBytes();              
+                resultString += "\nYou successfully uploaded " + file.getName() + "! The file size was " + file.getSize()/1000 + " Kb.";
                 
-                resultString += "You successfully uploaded " + file.getName() + "! The file size was " + file.getSize()/1000 + " Kb.";
                 //Make a call to the OpenCV module to identify the brand.
                 ImageMatcher matcher = new ImageMatcher();
                 String result_brand = matcher.match(bytes);
@@ -79,22 +77,31 @@ public class UploadController {
                 	return resultString;
                 }
                 
-                resultString += "\n Match: "+ result_brand;
+                resultString += "\nMatch: "+ result_brand;
                 
-                //Make a call AdServer with the use and brand information to fetch the ad.
-                PostRequestUtil request = new PostRequestUtil();
-                request.setUrl("http://localhost:8080/adserver/retrieveAd"); //TODO remove hard coded Url
-                request.setStrValues("brandName="+result_brand+"&latitude=" + userLat +"&longitude=" + userLong + "&category=Electronics"); //TODO remove hardcoded
-                
-                String AdResponse = request.post();
+                String AdResponse = "";
+                if(result_brand.equalsIgnoreCase("Not Found")){
+                	AdResponse = "Thank You for using recognizeme \n We failed to find any brand logo.";
+                }
+                else {
+	                //Make a call AdServer with the use and brand information to fetch the ad.
+	                PostRequestUtil request = new PostRequestUtil();
+	                request.setUrl("http://localhost:8080/adserver/retrieveAd"); //TODO remove hard coded Url
+	                request.setStrValues("brandName="+result_brand+"&latitude=" + userLat +"&longitude=" + userLong + "&category=Electronics"); //TODO remove hardcoded
+	                AdResponse = request.post();
+	                if(StringUtils.isEmpty(AdResponse)){
+	                	AdResponse = "Failed to reterive any deals for brand : " + result_brand;
+	                }
+                }
+	                
                 //TODO - check if response is fine
                 resultString += "\nResponse from AdServer: " + AdResponse;
                 
                 //TODO - Parse the response
-                resultString += "\nParsed Ad Response: ";
+                resultString += "\nParsed Ad Response: " + AdResponse;
                 
                 //TODO - Make Ad to be sent to glass
-                resultString += "\n Ad sending to glass: ";
+                resultString += "\nAd sending to glass";
                 Credential credential = null;
                 //Get user Credential
                 if (credentialFacade != null) {
@@ -103,23 +110,25 @@ public class UploadController {
                 		credential = credentialFacade.getCredentialForUser(userId).getCredential();
                     }
                 	else {
-                		logger.info("get credential return null");
+                		resultString += "\nget credential return null";
                 	}
                 }
                 else {
-                	logger.info("get credential for user returned null");
+                	resultString += "\nget credential for user returned null";
                 }
                 
                 resultString += "\nFetch User Credential Success ";
                 //Post Ad to Glass Mirror TODO uncomment below lines
-                //MirrorClient mirrorClient = new MirrorClient();
-                //TimelineItem timelineItem = mirrorClient.createTimeLineItemWithText("Ad for Brand :"+ result_brand + "\n"+AdResponse);
-                //mirrorClient.insertTimelineItem(credential, timelineItem);
+                MirrorClient mirrorClient = new MirrorClient();
+                TimelineItem timelineItem = mirrorClient.createTimeLineItemWithText(AdResponse);
+                mirrorClient.insertTimelineItem(credential, timelineItem);
+                resultString += "\nAd posted to glass time line";
+                return resultString;
                 
-                return "You successfully uploaded " + file.getName() + "! The file size was " + file.getSize()/1000 + " Kb.";
             } catch (Exception e) {
             	e.printStackTrace();
-                return "You failed to upload " + file.getName() + " => " + e.getMessage();
+            	resultString += "\nException: " + e.getMessage();
+                return "Exception: " + file.getName() + " => " + e.getMessage();
             }
             finally{
             	logger.info("Final Result string: ");
