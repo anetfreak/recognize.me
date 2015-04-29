@@ -89,7 +89,7 @@ public class UploadController {
 	                request.setStrValues("brandName="+result_brand+"&latitude=" + userLat +"&longitude=" + userLong + "&category=Electronics"); //TODO remove hardcoded
 	                AdResponse = request.post();
 	                if(StringUtils.isEmpty(AdResponse)){
-	                	AdResponse = "Sorry, No offers found for : " + result_brand + ".\n Please check back later.";
+	                	AdResponse = "Sorry, No offers found for : " + result_brand + ". Please check back later.";
 	                }
                 }
 	                

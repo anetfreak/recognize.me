@@ -72,7 +72,16 @@ public class MirrorClient {
   
   public TimelineItem createTimeLineItemWithText(String text){
 	    TimelineItem timelineItem = new TimelineItem();
-	    timelineItem.setText(text);
+	    String decoratedText = "{" +
+	    	  "'html': '<article><section><p class=\'text-auto-size\'><strong class=\'blue\'>AdFinder</strong><br/>"+
+	    		text +
+	    		"</p></section></article>',"+
+	    		"'notification': {" +
+	    		"'level': 'DEFAULT'" +
+	    		"}"+
+	    	"}";
+	    		
+	    timelineItem.setText(decoratedText);
 	    timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
 	    timelineItem.setMenuItems(getMenuItems());    
 	    return timelineItem;
