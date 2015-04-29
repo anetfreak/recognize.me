@@ -81,16 +81,15 @@ public class UploadController {
                 
                 String AdResponse = "";
                 if(result_brand.equalsIgnoreCase("Not Found")){
-                	AdResponse = "Thank You for using recognizeme \n We failed to find any brand logo.";
-                }
-                else {
+                	AdResponse = "Thank You for using RecognizeMe.\n Unfortunately, we could not identify any brand. Please take a clear any closer picture again.";
+                } else {
 	                //Make a call AdServer with the use and brand information to fetch the ad.
 	                PostRequestUtil request = new PostRequestUtil();
 	                request.setUrl("http://localhost:8080/adserver/retrieveAd"); //TODO remove hard coded Url
 	                request.setStrValues("brandName="+result_brand+"&latitude=" + userLat +"&longitude=" + userLong + "&category=Electronics"); //TODO remove hardcoded
 	                AdResponse = request.post();
 	                if(StringUtils.isEmpty(AdResponse)){
-	                	AdResponse = "Failed to reterive any deals for brand : " + result_brand;
+	                	AdResponse = "Sorry, No offers found for : " + result_brand + ".\n Please check back later.";
 	                }
                 }
 	                
