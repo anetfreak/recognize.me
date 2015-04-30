@@ -29,6 +29,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Tomcat v7.0"/>
-	<classpathentry kind="lib" path="/Users/chitsoni/Downloads/opencv-2.4.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

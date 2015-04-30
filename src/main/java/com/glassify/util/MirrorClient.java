@@ -15,16 +15,21 @@
  */
 package com.glassify.util;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.glassify.domain.MyCredential;
+import com.glassify.facade.CredentialFacade;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpResponse;
+import com.google.api.client.http.InputStreamContent;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.mirror.Mirror;
@@ -41,9 +46,9 @@ import com.google.common.io.ByteStreams;
  */
 public class MirrorClient {
 	private static Logger logger = Logger.getLogger(MirrorClient.class.getSimpleName());
-
+	
   //Main for testing
-  public static void main(String[] args){
+	public static void main(String[] args){
 	// Send welcome timeline item
     TimelineItem timelineItem = new TimelineItem();
     timelineItem.setText("Welcome to the Glass Java Quick Start");
@@ -54,11 +59,8 @@ public class MirrorClient {
 		MirrorClient mc = new MirrorClient();
 		insertedItem = mc.insertTimelineItem(credential, timelineItem);
 	} catch (IOException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-    //LOG.info("Bootstrapper inserted welcome message " + insertedItem.getId() + " for user "
-      //  + "test");
   }
   
   private List<MenuItem> getMenuItems() {
@@ -155,4 +157,59 @@ public class MirrorClient {
   public void deleteTimelineItem(Credential credential, String timelineItemId) throws IOException {
     getMirror(credential).timeline().delete(timelineItemId).execute();    
   }
+  
+  
+  public void testTimelineItem(CredentialFacade credentialFacade) {
+	  TimelineItem timelineItem = new TimelineItem();
+	    timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
+	    MyCredential credential = credentialFacade.getCredentialForUser("glass4sjsu@gmail.com");
+		try {
+			File file = new File("//Users//ameya//Downloads//apple.jpg");
+			InputStream stream = new FileInputStream(file);
+			String text = "Buy one Get one at Starbucks!";
+			String decoratedText = "{" +
+			    	  "'html': '<article><section><p class=\'text-auto-size\'><strong class=\'blue\'>AdFinder</strong><br/>"+
+			    		text +
+			    		"</p></section></article>',"+
+			    		"'notification': {" +
+			    		"'level': 'DEFAULT'" +
+			    		"}"+
+			    	"}";
+			TimelineItem item = insertTimelineItem(getMirror(credential.getCredential()), text, "image/jpeg", stream, "DEFAULT");
+			
+			
+//			File file = new File("//Users//ameya//Downloads//doll.mp4");
+//			InputStream stream = new FileInputStream(file);
+//			TimelineItem item = insertTimelineItem(getMirror(credential.getCredential()), "Hola", "video/mp4", stream, "DEFAULT");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+  }
+  
+  	public static TimelineItem insertTimelineItem(Mirror service, String text, String contentType,
+	      InputStream attachment, String notificationLevel) {
+	    TimelineItem timelineItem = new TimelineItem();
+	    timelineItem.setText(text);
+	    
+	    List<MenuItem> menuItemList = new ArrayList<MenuItem>();
+	    menuItemList.add(new MenuItem().setAction("DELETE"));
+        
+        timelineItem.setMenuItems(menuItemList);
+	    if (notificationLevel != null && notificationLevel.length() > 0) {
+	      timelineItem.setNotification(new NotificationConfig().setLevel(notificationLevel));
+	    }
+	    try {
+	      if (contentType != null && contentType.length() > 0 && attachment != null) {
+	        // Insert both metadata and attachment.
+	        InputStreamContent mediaContent = new InputStreamContent(contentType, attachment);
+	        return service.timeline().insert(timelineItem, mediaContent).execute();
+	      } else {
+	        // Insert metadata only.
+	        return service.timeline().insert(timelineItem).execute();
+	      }
+	    } catch (IOException e) {
+	      System.err.println("An error occurred: " + e);
+	      return null;
+	    }
+	  }
 }

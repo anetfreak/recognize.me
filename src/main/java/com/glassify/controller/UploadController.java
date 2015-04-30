@@ -33,6 +33,8 @@ public class UploadController {
 	
 	@RequestMapping("/upload")
 	public ModelAndView showUploadPage() {
+		MirrorClient client = new MirrorClient();
+		client.testTimelineItem(credentialFacade);
 		return new ModelAndView("upload");
 	}
 	

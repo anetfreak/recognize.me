@@ -53,14 +53,6 @@ public class AuthenticationController {
 }
 
 //{
-//	"html": "<article>\n  <section>\n    <p class=\"text-auto-size\"><strong class=\"blue\">AdFinder</strong> has a new advertisement for you.\n<br/><br/>\nTap to find out more..\n    </p>\n  </section>\n</article>",
-//	"notification": {
-//	"level": "DEFAULT"
-//}
-//}
-
-
-//{
 //  "html": "<article>\n  <section>\n    <p class=\"text-auto-size\"><strong class=\"blue\">AdFinder</strong><br/>Sorry, No offers found for : Starbucks. Please check back later.</p>\n  </section>\n</article>",
 //	"notification": {
 //	"level": "DEFAULT"
