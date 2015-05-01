@@ -88,7 +88,7 @@ public class UploadController {
 	                //Make a call AdServer with the use and brand information to fetch the ad.
 	                PostRequestUtil request = new PostRequestUtil();
 	                request.setUrl("http://localhost:8080/adserver/retrieveAd"); //TODO remove hard coded Url
-	                request.setStrValues("brandName="+result_brand+"&latitude=" + userLat +"&longitude=" + userLong + "&category=Electronics"); //TODO remove hardcoded
+	                request.setStrValues("brandName="+result_brand+"&latitude=" + userLat +"&longitude=" + userLong + "&category=Promotion"); //TODO remove hardcoded
 	                AdResponse = request.post();
 	                if(StringUtils.isEmpty(AdResponse)){
 	                	AdResponse = "Sorry, No offers found for : " + result_brand + ". Please check back later.";

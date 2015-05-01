@@ -205,7 +205,7 @@ public class ImageMatcher{
             	brandName =  "Walmart";
             }
             else if(value == 3) {
-            	brandName =  "Starbucks Coffee";
+            	brandName =  "Starbucks";
             }
             else if(value == 4) {
             	brandName =  "Amazon";
