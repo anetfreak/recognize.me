@@ -32,8 +32,8 @@ public class AuditTrailDaoImpl implements AuditTrailDao {
 		
 		Object[] args = new Object[] { auditTrail.getType(), auditTrail.getEmail(), auditTrail.getLatitude(), auditTrail.getLongitude(),
 				auditTrail.getFileSize(), auditTrail.isMatched(), auditTrail.getBrand(), auditTrail.isAdFound(), auditTrail.getAdText(),
-				auditTrail.isGetCredential(), auditTrail.isAdPosted(), auditTrail.getStartTimeUpload(), auditTrail.getEndTimeUpload(),
-				auditTrail.getStartTimeMatch(), auditTrail.getEndTimeMatch(), auditTrail.getStartTimeAd(), auditTrail.getEndtimeAd()};
+				auditTrail.isGetCredential(), auditTrail.isAdPosted(), dateFormat.format(auditTrail.getStartTimeUpload()), dateFormat.format(auditTrail.getEndTimeUpload()),
+				dateFormat.format(auditTrail.getStartTimeMatch()), dateFormat.format(auditTrail.getEndTimeMatch()), dateFormat.format(auditTrail.getStartTimeAd()), dateFormat.format(auditTrail.getEndtimeAd())};
 		
 		int out = jdbcTemplate.update(query, args);
 	}
