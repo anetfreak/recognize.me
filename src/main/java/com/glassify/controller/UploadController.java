@@ -1,6 +1,5 @@
 package com.glassify.controller;
 
-import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,7 +22,6 @@ import com.glassify.facade.CredentialFacade;
 import com.glassify.util.AuditTrail;
 import com.glassify.util.ImageMatcher;
 import com.glassify.util.MirrorClient;
-import com.glassify.util.MyLogger;
 import com.glassify.util.PostRequestUtil;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.services.mirror.model.TimelineItem;
@@ -39,9 +37,20 @@ public class UploadController {
 	
 	@Autowired
 	private AuditTrailFacade auditTrailFacade;
-	
-	private AuditTrail auditTrail = new AuditTrail();
+	private AuditTrail auditTrail;
 	final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+	
+	private static Logger logger = Logger.getLogger(UploadController.class.getName());
+	
+	private Date getCurrentDatetime() {
+		try {
+			return dateFormat.parse((new DateTime()).toString("MM/dd/yyyy hh:mm:ss"));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	@RequestMapping("/upload")
 	public ModelAndView showUploadPage() {
@@ -56,26 +65,14 @@ public class UploadController {
 		return "Success";
 	}
 	
-	private static Logger logger = Logger.getLogger(UploadController.class.getName());
-	private static PrintWriter writer = MyLogger.getWriter();
-	
-	private Date getCurrentDatetime() {
-		try {
-			return dateFormat.parse((new DateTime()).toString("dd/MM/yyyy hh:mm:ss"));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
 	@RequestMapping(value="/uploadImage", method=RequestMethod.POST)
 	public @ResponseBody String uploadImage(
 			@RequestParam("file") MultipartFile file,
 			@RequestParam("email") MultipartFile email,
 			@RequestParam("latitude") MultipartFile latitude,
-			@RequestParam("longitude") MultipartFile longitude) throws ParseException
-			{
+			@RequestParam("longitude") MultipartFile longitude) throws ParseException {
+		
+		auditTrail = new AuditTrail();
 		/*logging in DB*/auditTrail.setType("uploadImage");
 		/*logging in DB*/auditTrail.setStartTimeUpload(getCurrentDatetime());
 		

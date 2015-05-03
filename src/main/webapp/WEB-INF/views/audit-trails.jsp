@@ -7,14 +7,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Recognize.Me! - Audit Trails</title>
 <script type="text/javascript" src="resources/js/jquery-2.1.3.min.js"></script>
-<script type="text/javascript"
-	src="resources/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="resources/js/index.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="resources/js/trails.js"></script>
 <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="resources/bootstrap/css/bootstrap-theme.min.css">
-<link rel="stylesheet"
-	href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="resources/bootstrap/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="resources/css/index.css">
 </head>
 <body>
@@ -33,13 +33,13 @@
 
 			<div class="container">
 				<div class="row">
-					<div class="col-lg-8 col-lg-offset-1">
+					<div class="col-lg-11 col-lg-offset-1">
 						<h3>Recognize.me</h3>
 						<hr>
-						<div id="show-audit-trails" style="margin-top: 20px;">
-							<h4>Get All Brands</h4>
+						<div id="show-audit-trails" style="margin: 20px 0px 50px 0px;">
+							<h4>Audit Trails</h4>
 							<div>
-								<table id="ads-table" class="table table-striped" style="margin-top: 30px;">
+								<table id="ads-table" class="table table-striped hover row-border compact" style="margin-top: 30px; width: 100%;">
 									<thead>
 										<tr>
 											<th>Type</th>
