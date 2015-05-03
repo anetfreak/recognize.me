@@ -1,5 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
@@ -43,6 +44,38 @@
 							        </div>
 							        <form:errors path="file" cssStyle="color: #ff0000;" />
 							    </form:form>
+							</div>
+							
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-8 col-lg-offset-1">
+							<div id="upload-image-div" style="margin-top: 20px;">
+								<c:forEach var="myimg" items="${imageUrlList}">
+									<form:form class="form-group" method="POST" action="uploadImage"  enctype="multipart/form-data">
+	<!-- 									<table>
+										<tbody>
+										<tr>
+											<td> -->
+											<div class="col-sm-3">
+	 											<%-- <img src="/userimages/${myimg}" width="100%" height="100px"> --%>
+	 											<input type="image" src="/userimages/${myimg}" name="image" width="100%" height="100px">
+	 											<input style="display: none;" class="form-control" type="file" name="file" value="/userimages/${myimg}" filename="abc.jpg"/>
+	 											<input style="display: none;" class="form-control" type="file" name="email" filename="myemail@gmail.com"/>
+	 											<input style="display: none;" class="form-control" value="678" type="file" name="latitude" />
+	 											<input style="display: none;" class="form-control" value="352653" type="file" name="longitude" />
+	<!-- 									  	</td>
+										  	<td> -->
+	 											<input class="form-control btn btn-info" type="submit" value="Upload" width="10px" />
+	 											</div>
+	<!--  										</td>
+	 									</tr>
+	 									</tbody>
+	 									</table>
+	 									<hr> -->
+	 									<form:errors path="file" cssStyle="color: #ff0000;" />
+								    </form:form>
+								</c:forEach>
 							</div>
 						</div>
 					</div>

@@ -1,8 +1,11 @@
 package com.glassify.controller;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.joda.time.DateTime;
@@ -54,9 +57,20 @@ public class UploadController {
 	
 	@RequestMapping("/upload")
 	public ModelAndView showUploadPage() {
-		MirrorClient client = new MirrorClient();
-		client.testTimelineItem(credentialFacade);
-		return new ModelAndView("upload");
+		//MirrorClient client = new MirrorClient();
+		//client.testTimelineItem(credentialFacade);
+		List<String> imageUrlList = new ArrayList<String>();  
+		File imageDir = new File("/Users/amitagra/ImageMatching/glassImages");  
+		for(File imageFile : imageDir.listFiles()){  
+		  String imageFileName = imageFile.getName();  
+
+		  // add this images name to the list we are building up  
+		  imageUrlList.add(imageFileName);  
+
+		}  
+		ModelAndView modelandview = new ModelAndView("upload");
+		modelandview.addObject("imageUrlList", imageUrlList);
+		return modelandview;
 	}
 	
 	@RequestMapping(value = "/uploadMessage", method = RequestMethod.POST)
@@ -182,7 +196,7 @@ public class UploadController {
             }
             
         } else {
-        	logger.info("Fiel is empty");
+        	logger.info("File is empty");
             return "You failed to upload " + file.getName() + " because the file was empty.";
         }
 	}
