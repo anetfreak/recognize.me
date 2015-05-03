@@ -83,7 +83,7 @@ public class MirrorClient {
 	    		"}"+
 	    	"}";
 	    		
-	    timelineItem.setText(decoratedText);
+	    timelineItem.setHtml(decoratedText);
 	    timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
 	    timelineItem.setMenuItems(getMenuItems());    
 	    return timelineItem;
@@ -166,7 +166,7 @@ public class MirrorClient {
 		try {
 			File file = new File("//Users//ameya//Downloads//apple.jpg");
 			InputStream stream = new FileInputStream(file);
-			String text = "Buy one Get one at Starbucks!";
+			String text = "Unfortunately, we could not identify any brand. Please take a clear and closer picture again.";
 			String decoratedText = "{" +
 			    	  "'html': '<article><section><p class=\'text-auto-size\'><strong class=\'blue\'>AdFinder</strong><br/>"+
 			    		text +
@@ -175,7 +175,7 @@ public class MirrorClient {
 			    		"'level': 'DEFAULT'" +
 			    		"}"+
 			    	"}";
-			TimelineItem item = insertTimelineItem(getMirror(credential.getCredential()), text, "image/jpeg", stream, "DEFAULT");
+			TimelineItem item = insertTimelineItem(getMirror(credential.getCredential()), decoratedText, "image/jpeg", stream, "DEFAULT");
 			
 			
 //			File file = new File("//Users//ameya//Downloads//doll.mp4");
@@ -189,7 +189,7 @@ public class MirrorClient {
   	public static TimelineItem insertTimelineItem(Mirror service, String text, String contentType,
 	      InputStream attachment, String notificationLevel) {
 	    TimelineItem timelineItem = new TimelineItem();
-	    timelineItem.setText(text);
+	    timelineItem.setHtml(text);
 	    
 	    List<MenuItem> menuItemList = new ArrayList<MenuItem>();
 	    menuItemList.add(new MenuItem().setAction("DELETE"));
