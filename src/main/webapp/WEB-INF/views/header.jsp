@@ -16,6 +16,7 @@
 		<li><a href="/about"><i class="fa fa-info"></i> About</a></li>
 		<li><a href="/contact"><i class="fa fa-phone"></i> Contact</a></li>
 		<li><a href="/login"><i class="fa fa-user"></i> Login/Signup</a></li>
+		<li><a href="/audit">Audit Trails</a></li>
 	</ul>
 </nav>
 <!-- /#sidebar-wrapper -->

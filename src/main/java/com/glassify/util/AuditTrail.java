@@ -26,16 +26,14 @@ public class AuditTrail implements Serializable {
 	String brand;
 	boolean adFound;
 	String adText;
+	boolean getCredential;
+	boolean adPosted;
 	Date startTimeUpload;
 	Date endTimeUpload;
 	Date startTimeMatch;
 	Date endTimeMatch;
 	Date startTimeAd;
 	Date endtimeAd;
-	boolean GetCredential;
-	boolean AdPosted;
-
-
 
 	public AuditTrail() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
@@ -58,24 +56,24 @@ public class AuditTrail implements Serializable {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		GetCredential = false;
-		AdPosted = false;
+		getCredential = false;
+		adPosted = false;
 	}
 
 	public boolean isAdPosted() {
-		return AdPosted;
+		return adPosted;
 	}
 
 	public void setAdPosted(boolean isAdPosted) {
-		this.AdPosted = isAdPosted;
+		this.adPosted = isAdPosted;
 	}
 	
 	public boolean isGetCredential() {
-		return GetCredential;
+		return getCredential;
 	}
 
 	public void setGetCredential(boolean GetCredential) {
-		this.GetCredential = GetCredential;
+		this.getCredential = GetCredential;
 	}
 
 	//@JsonSerialize(using = JsonDateSerializer.class)
