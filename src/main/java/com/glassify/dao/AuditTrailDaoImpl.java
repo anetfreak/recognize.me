@@ -20,7 +20,7 @@ public class AuditTrailDaoImpl implements AuditTrailDao {
 	@Autowired
 	private DataSource dataSource;
 	
-	final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+	final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 
 	@Override
 	public void save(AuditTrail auditTrail) throws Exception {

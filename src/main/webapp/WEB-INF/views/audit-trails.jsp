@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -64,23 +65,23 @@
 									<tbody>
 										<c:forEach var="trails" items="${auditTrails}">
 											<tr>
-												<td><c:out value="${trails.type}"></c:out></td>
-												<td><c:out value="${trails.email}"></c:out></td>
-												<td><c:out value="${trails.latitude}"></c:out></td>
-												<td><c:out value="${trails.longitude}"></c:out></td>
-												<td><c:out value="${trails.fileSize}"></c:out></td>
-												<td><c:out value="${trails.matched}"></c:out></td>
-												<td><c:out value="${trails.brand}"></c:out></td>
-												<td><c:out value="${trails.adFound}"></c:out></td>
-												<td><c:out value="${trails.adText}"></c:out></td>
-												<td><c:out value="${trails.getCredential}"></c:out></td>
-												<td><c:out value="${trails.adPosted}"></c:out></td>
-												<td><c:out value="${trails.startTimeUpload}"></c:out></td>
-												<td><c:out value="${trails.endTimeUpload}"></c:out></td>
-												<td><c:out value="${trails.startTimeMatch}"></c:out></td>
-												<td><c:out value="${trails.endTimeMatch}"></c:out></td>
-												<td><c:out value="${trails.startTimeAd}"></c:out></td>
-												<td><c:out value="${trails.endtimeAd}"></c:out></td>
+												<td><c:out value="${trails.type}"/></td>
+												<td><c:out value="${trails.email}"/></td>
+												<td><c:out value="${trails.latitude}"/></td>
+												<td><c:out value="${trails.longitude}"/></td>
+												<td><c:out value="${trails.fileSize}"/></td>
+												<td><c:out value="${trails.matched}"/></td>
+												<td><c:out value="${trails.brand}"/></td>
+												<td><c:out value="${trails.adFound}"/></td>
+												<td><c:out value="${trails.adText}"/></td>
+												<td><c:out value="${trails.getCredential}"/></td>
+												<td><c:out value="${trails.adPosted}"/></td>
+												<td><fmt:formatDate pattern="MM-dd-yyyy hh:mm:ss" value="${trails.startTimeUpload}"/></td>
+												<td><fmt:formatDate pattern="MM-dd-yyyy hh:mm:ss" value="${trails.endTimeUpload}"/></td>
+												<td><fmt:formatDate pattern="MM-dd-yyyy hh:mm:ss" value="${trails.startTimeMatch}"/></td>
+												<td><fmt:formatDate pattern="MM-dd-yyyy hh:mm:ss" value="${trails.endTimeMatch}"/></td>
+												<td><fmt:formatDate pattern="MM-dd-yyyy hh:mm:ss" value="${trails.startTimeAd}"/></td>
+												<td><fmt:formatDate pattern="MM-dd-yyyy hh:mm:ss" value="${trails.endtimeAd}" /></td>
 											</tr>
 										</c:forEach>
 									</tbody>

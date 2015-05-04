@@ -41,7 +41,7 @@ public class UploadController {
 	@Autowired
 	private AuditTrailFacade auditTrailFacade;
 	private AuditTrail auditTrail;
-	final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+	final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 	
 	private static Logger logger = Logger.getLogger(UploadController.class.getName());
 	
