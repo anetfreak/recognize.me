@@ -11,11 +11,13 @@
 <script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="resources/js/index.js"></script>
 <script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 <script type="text/javascript" src="resources/js/trails.js"></script>
 <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="resources/bootstrap/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
 <link rel="stylesheet" href="resources/css/index.css">
 </head>
 <body>
@@ -39,21 +41,20 @@
 						<hr>
 						<div id="show-audit-trails" style="margin: 20px 0px 50px 0px;">
 							<h4>Audit Trails</h4>
-							<div>
-								<table id="ads-table" class="table table-striped hover row-border compact" style="margin-top: 30px; width: 100%;">
+							<div  style="margin: 20px 0px 20px 0px;">
+								<table id="ads-table" class="table table-responsive table-striped table-bordered table-condensed hover row-border" style="margin-top: 30px; width: 100%;">
 									<thead>
 										<tr>
-											<th>Type</th>
 											<th>User</th>
 											<th>Latitude</th>
 											<th>Longitude</th>
-											<th>File Size</th>
-											<th>Matched</th>
+											<th>File Size (Kb)</th>
+											<th>Matched?</th>
 											<th>Brand</th>
-											<th>Ad Found</th>
+											<th>Ad Found?</th>
 											<th>Ad Text</th>
-											<th>Get Credential</th>
-											<th>Ad Posted</th>
+											<th>Authenticated?</th>
+											<th>Ad Posted?</th>
 											<th>Upload Start Time</th>
 											<th>Upload End Time</th>
 											<th>Match Start Time</th>
@@ -65,7 +66,6 @@
 									<tbody>
 										<c:forEach var="trails" items="${auditTrails}">
 											<tr>
-												<td><c:out value="${trails.type}"/></td>
 												<td><c:out value="${trails.email}"/></td>
 												<td><c:out value="${trails.latitude}"/></td>
 												<td><c:out value="${trails.longitude}"/></td>
