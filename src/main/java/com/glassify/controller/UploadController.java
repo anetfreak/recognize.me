@@ -200,4 +200,19 @@ public class UploadController {
             return "You failed to upload " + file.getName() + " because the file was empty.";
         }
 	}
+	
+	@RequestMapping(value="/testUpload", method=RequestMethod.POST)
+	public @ResponseBody String testUpload(@RequestParam("file") MultipartFile file,
+			@RequestParam("email") String email,
+			@RequestParam("latitude") String latitude,
+			@RequestParam("longitude") String longitude) {
+	
+		System.out.println("Email - " + email);
+		System.out.println("Latitude - " + latitude);
+		System.out.println("Longitude - " + longitude);
+		System.out.println("\nYou successfully uploaded " + file.getName() + "! The file size was " + file.getSize()/1000 + " Kb.");
+		
+		return "success";
+	}
+	
 }
