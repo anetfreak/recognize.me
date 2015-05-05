@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.glassify.domain.AuditTrailFailure;
 import com.glassify.domain.AuditTrailResult;
-import com.glassify.domain.AuditTrailSuccess;
 import com.glassify.facade.AuditTrailFacade;
 
 /**
@@ -31,18 +29,11 @@ public class StatsController {
 		return new ModelAndView("stats");
 	}
 	
-	@RequestMapping("/stats/getSuccessResults")
-	public @ResponseBody List<AuditTrailSuccess> getAuditSuccessResults() {
+	@RequestMapping("/stats/getResults")
+	public @ResponseBody List<AuditTrailResult> getAuditFailureResults() {
 		
-		AuditTrailResult result = auditTrailfacade.getResultStats();
-		return result.getSuccess();
-	}
-	
-	@RequestMapping("/stats/getFailureResults")
-	public @ResponseBody List<AuditTrailFailure> getAuditFailureResults() {
-		
-		AuditTrailResult result = auditTrailfacade.getResultStats();
-		return result.getFailures();
+		List<AuditTrailResult> result = auditTrailfacade.getResultStats();
+		return result;
 	}
 	
 }

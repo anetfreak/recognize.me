@@ -9,5 +9,5 @@ public interface AuditTrailDao {
 
 	void save(AuditTrail auditTrail) throws Exception;
 	List<AuditTrail> get();
-	AuditTrailResult getResultStats(); 
+	List<AuditTrailResult> getResultStats(); 
 }

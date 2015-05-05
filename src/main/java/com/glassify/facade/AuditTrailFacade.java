@@ -9,5 +9,5 @@ public interface AuditTrailFacade {
 
 	void saveAuditTrail(AuditTrail auditTrail) throws Exception;
 	List<AuditTrail> getAllAuditTrail();
-	AuditTrailResult getResultStats();
+	List<AuditTrailResult> getResultStats();
 }

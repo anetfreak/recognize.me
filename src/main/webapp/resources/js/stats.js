@@ -1,37 +1,28 @@
 $(document).ready(function () {
 	$.ajax({
-		url: 'http://localhost:8080/stats/getSuccessResults',
+		url: 'http://localhost:8080/stats/getResults',
 		method: 'GET'
 	}).done(function(data){
-		var entries = [];
+		
+		var successEntries = [];
 		for(i = 0; i < data.length; i++) {
 			var entry = [];
 			entry.push(data[i].email);
-			entry.push(data[i].count);
-			entries.push(entry);
+			entry.push(data[i].success);
+			successEntries.push(entry);
 		}
-		//console.log(JSON.stringify(entries));
+//		console.log(JSON.stringify(successEntries));
+		drawPieChart('#successChart', 'Audit Trail Success by User', 'Success rate per user', successEntries);
 		
-		drawPieChart('#successChart', 'Audit Trail Success by User', 'Success rate per user', entries);
-		
-	}).fail(function(err){
-		console.log(err);
-	});
-	
-	$.ajax({
-		url: 'http://localhost:8080/stats/getFailureResults',
-		method: 'GET'
-	}).done(function(data){
-		var entries = [];
+		var failureEntries = [];
 		for(i = 0; i < data.length; i++) {
 			var entry = [];
 			entry.push(data[i].email);
-			entry.push(data[i].count);
-			entries.push(entry);
+			entry.push(data[i].failures);
+			failureEntries.push(entry);
 		}
-		//console.log(JSON.stringify(entries));
-		
-		drawPieChart('#failureChart', 'Audit Trail Failure by User', 'Failure rate per user', entries);
+//		console.log(JSON.stringify(failureEntries));
+		drawPieChart('#failureChart', 'Audit Trail Failures by User', 'Failure rate per user', failureEntries);
 		
 	}).fail(function(err){
 		console.log(err);

@@ -1,22 +1,28 @@
 package com.glassify.domain;
 
-import java.util.List;
 
 public class AuditTrailResult {
 	
-	private List<AuditTrailSuccess> success;
-	private List<AuditTrailFailure> failures;
+	private String email;
+	private int success;
+	private int failures;
 	
-	public List<AuditTrailSuccess> getSuccess() {
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public int getSuccess() {
 		return success;
 	}
-	public void setSuccess(List<AuditTrailSuccess> success) {
+	public void setSuccess(int success) {
 		this.success = success;
 	}
-	public List<AuditTrailFailure> getFailures() {
+	public int getFailures() {
 		return failures;
 	}
-	public void setFailures(List<AuditTrailFailure> failures) {
+	public void setFailures(int failures) {
 		this.failures = failures;
 	}
 }

@@ -15,9 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.glassify.domain.AuditTrailFailure;
 import com.glassify.domain.AuditTrailResult;
-import com.glassify.domain.AuditTrailSuccess;
 import com.glassify.util.AuditTrail;
 
 @Component
@@ -83,38 +81,24 @@ public class AuditTrailDaoImpl implements AuditTrailDao {
 		return auditTrailList;
 	}
 	
-	public AuditTrailResult getResultStats() {
+	public List<AuditTrailResult> getResultStats() {
 		String query = "select a.email, (select count(*) from audit_trail where email=a.email)  as total, count(a.matched) as matched "
 				+ " from audit_trail a "
 				+ " where matched = 1"
 				+ " group by email";
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-		List<AuditTrailSuccess> successResults =  jdbcTemplate.query(query, new RowMapper<AuditTrailSuccess>() {
-			public AuditTrailSuccess mapRow(ResultSet rs, int rowNum)
+		return jdbcTemplate.query(query, new RowMapper<AuditTrailResult>() {
+
+			public AuditTrailResult mapRow(ResultSet rs, int rowNum)
 					throws SQLException {
-				AuditTrailSuccess result = new AuditTrailSuccess();
+				AuditTrailResult result = new AuditTrailResult();
 				result.setEmail(rs.getString("email"));
-				result.setCount(rs.getInt("matched"));
+				result.setSuccess(rs.getInt("matched"));
+				result.setFailures(rs.getInt("total") - rs.getInt("matched"));
 				return result;
 			}
 		});
-		
-		List<AuditTrailFailure> failureResults =  jdbcTemplate.query(query, new RowMapper<AuditTrailFailure>() {
-			public AuditTrailFailure mapRow(ResultSet rs, int rowNum)
-					throws SQLException {
-				AuditTrailFailure result = new AuditTrailFailure();
-				result.setEmail(rs.getString("email"));
-				result.setCount(rs.getInt("total") - rs.getInt("matched"));
-				return result;
-			}
-		});
-		
-		AuditTrailResult result = new AuditTrailResult();
-		result.setSuccess(successResults);
-		result.setFailures(failureResults);
-		
-		return result;
 	}
 
 }

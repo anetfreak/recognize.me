@@ -26,7 +26,7 @@ public class AuditTrailFacadeImpl implements AuditTrailFacade{
 	}
 	
 	@Override
-	public AuditTrailResult getResultStats() {
+	public List<AuditTrailResult> getResultStats() {
 		return auditTrailDao.getResultStats();
 	}
 }
