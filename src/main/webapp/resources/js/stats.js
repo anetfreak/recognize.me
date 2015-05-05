@@ -11,7 +11,7 @@ $(document).ready(function () {
 			entry.push(data[i].success);
 			successEntries.push(entry);
 		}
-		drawPieChart('#successChart', 'Audit Trail Success by User', 'Success rate per user', successEntries);
+		drawPieChart('#successChart', 'Logo Identification Success by User', 'Success rate per user', successEntries);
 		
 		var failureEntries = [];
 		for(i = 0; i < data.length; i++) {
@@ -20,7 +20,7 @@ $(document).ready(function () {
 			entry.push(data[i].failures);
 			failureEntries.push(entry);
 		}
-		drawPieChart('#failureChart', 'Audit Trail Failures by User', 'Failure rate per user', failureEntries);
+		drawPieChart('#failureChart', 'Logo Identification Failures by User', 'Failure rate per user', failureEntries);
 		
 		var xAxisList = [];
 		for(i = 0; i < data.length; i++) {
@@ -55,7 +55,7 @@ $(document).ready(function () {
 		};
 		yAxisList.push(entry);
 		
-		drawLineChart('#lineChart', 'Success/Failure Ratio per User', 'Shows the success/failure bifurcation for each user', 'Success/Failure Count', xAxisList, yAxisList);
+		drawLineChart('#lineChart', 'Logo Identification Success/Failure Ratio per User', 'Shows the success/failure bifurcation for each user', 'Success/Failure Count', xAxisList, yAxisList);
 		
 	}).fail(function(err){
 		console.log(err);
