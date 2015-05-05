@@ -40,7 +40,7 @@
 						<h3>Recognize.me</h3>
 						<hr>
 						<div id="show-audit-trails" style="margin: 20px 0px 50px 0px;">
-							<h4>Audit Trails</h4>
+							<h4>User Actions Audit Trails</h4>
 							<div  style="margin: 20px 0px 20px 0px;">
 								<table id="ads-table" class="table table-responsive table-striped table-bordered table-condensed hover row-border" style="margin-top: 30px; width: 100%;">
 									<thead>

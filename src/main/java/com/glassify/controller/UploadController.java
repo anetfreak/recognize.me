@@ -59,8 +59,9 @@ public class UploadController {
 	public ModelAndView showUploadPage() {
 		//MirrorClient client = new MirrorClient();
 		//client.testTimelineItem(credentialFacade);
+		
 		List<String> imageUrlList = new ArrayList<String>();  
-		File imageDir = new File("/Users/amitagra/ImageMatching/glassImages");  
+		File imageDir = new File("/Users/ameya/Pictures/Walls");  
 		for(File imageFile : imageDir.listFiles()){  
 		  String imageFileName = imageFile.getName();  
 

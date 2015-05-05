@@ -59,8 +59,8 @@
 											<td> -->
 											<div class="col-sm-3">
 	 											<%-- <img src="/userimages/${myimg}" width="100%" height="100px"> --%>
-	 											<input type="image" src="/userimages/${myimg}" name="image" width="100%" height="100px">
-	 											<input style="display: none;" class="form-control" type="file" name="file" value="/userimages/${myimg}" filename="abc.jpg"/>
+	 											<input type="image" src="${myimg}" name="image" width="100%" height="100px">
+	 											<input style="display: none;" class="form-control" type="file" name="file" value="${myimg}" filename="abc.jpg"/>
 	 											<input style="display: none;" class="form-control" type="file" name="email" filename="myemail@gmail.com"/>
 	 											<input style="display: none;" class="form-control" value="678" type="file" name="latitude" />
 	 											<input style="display: none;" class="form-control" value="352653" type="file" name="longitude" />
