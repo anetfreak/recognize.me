@@ -48,6 +48,12 @@
 								</div>
 							</div>
 							
+							<div class="row" style="margin: 30px 0 30px;">
+								<div class="col-md-12">
+									<div id="lineChart"></div>
+								</div>
+							</div>
+							
 						</div>
 					</div>
 				</div>
