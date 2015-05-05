@@ -40,11 +40,14 @@
 							
 							<!-- Meat of the page -->
 							<div class="row" style="margin: 30px 0 30px;">
-								<div class="col-md-6">
-									<div id="successChart" style="min-width: 500px;"></div>
+								<div class="col-md-12">
+									<div id="successChart"></div>
 								</div>
-								<div class="col-md-6">
-									<div id="failureChart" style="width: auto;"></div>
+							</div>
+							
+							<div class="row" style="margin: 30px 0 30px;">
+								<div class="col-md-12">
+									<div id="failureChart"></div>
 								</div>
 							</div>
 							
