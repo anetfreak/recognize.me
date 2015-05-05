@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.glassify.dao.AuditTrailDao;
+import com.glassify.domain.AuditTrailResult;
 import com.glassify.util.AuditTrail;
 
 @Component
@@ -22,5 +23,10 @@ public class AuditTrailFacadeImpl implements AuditTrailFacade{
 	@Override
 	public void saveAuditTrail(AuditTrail auditTrail) throws Exception {
 		auditTrailDao.save(auditTrail);
+	}
+	
+	@Override
+	public AuditTrailResult getResultStats() {
+		return auditTrailDao.getResultStats();
 	}
 }

@@ -8,6 +8,8 @@
 		<title>Recognize.Me! - Statistics</title>
 		<script type="text/javascript" src="resources/js/jquery-2.1.3.min.js"></script>
 		<script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
+		<script src="http://code.highcharts.com/highcharts.js"></script>
+    	<script src="http://code.highcharts.com/modules/exporting.js"></script>
 		<script type="text/javascript" src="resources/js/index.js"></script>
 		<script type="text/javascript" src="resources/js/stats.js"></script>
 		<link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
@@ -35,6 +37,16 @@
 							<h3>Recognize.me</h3>
 							<hr>
 							<h4>Statistics</h4>
+							
+							<!-- Meat of the page -->
+							<div class="row" style="margin: 30px 0 30px;">
+								<div class="col-md-6">
+									<div id="successChart" style="min-width: 500px;"></div>
+								</div>
+								<div class="col-md-6">
+									<div id="failureChart" style="width: auto;"></div>
+								</div>
+							</div>
 							
 						</div>
 					</div>
