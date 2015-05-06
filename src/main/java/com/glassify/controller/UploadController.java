@@ -1,6 +1,11 @@
 package com.glassify.controller;
 
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,8 +13,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,18 +64,17 @@ public class UploadController {
 	}
 	
 	@RequestMapping("/upload")
-	public ModelAndView showUploadPage() {
+	public ModelAndView showUploadPage(HttpServletRequest request) {
 		//MirrorClient client = new MirrorClient();
 		//client.testTimelineItem(credentialFacade);
 		
 		List<String> imageUrlList = new ArrayList<String>();  
-		File imageDir = new File("/Users/ameya/Pictures/Walls");  
-		for(File imageFile : imageDir.listFiles()){  
+		String path = request.getSession().getServletContext().getRealPath("/resources/test-images");
+		File resource = new FileSystemResource(new File(path)).getFile();
+		
+		for(File imageFile : resource.listFiles()){  
 		  String imageFileName = imageFile.getName();  
-
-		  // add this images name to the list we are building up  
 		  imageUrlList.add(imageFileName);  
-
 		}  
 		ModelAndView modelandview = new ModelAndView("upload");
 		modelandview.addObject("imageUrlList", imageUrlList);
@@ -100,6 +107,7 @@ public class UploadController {
 		String userId = email.getOriginalFilename();
 		String userLat = latitude.getOriginalFilename();
 		String userLong = longitude.getOriginalFilename();
+		
 		/*logging in DB*/auditTrail.setEmail(userId);
 		/*logging in DB*/auditTrail.setLatitude(userLat);
 		/*logging in DB*/auditTrail.setLongitude(userLong);
@@ -111,8 +119,6 @@ public class UploadController {
                 resultString += "\nYou successfully uploaded " + file.getName() + "! The file size was " + file.getSize()/1000 + " Kb.";
                 /*logging in DB*/auditTrail.setFileSize(file.getSize()/1000);
                 
-                
-                
                 /*****STEP: Call Image Matcher to get Brand*****/
                 //Make a call to the OpenCV module to identify the brand.
                 /*logging in DB*/auditTrail.setStartTimeMatch(getCurrentDatetime());
@@ -120,8 +126,6 @@ public class UploadController {
                 String result_brand = matcher.match(bytes);        
                 resultString += "\nMatch: "+ result_brand;
                 /*logging in DB*/auditTrail.setEndTimeMatch(getCurrentDatetime());
-                
-                
                 
                 /*****STEP: Get Advertisement from Ad Server*****/
                 /*logging in DB*/auditTrail.setStartTimeAd(getCurrentDatetime());
@@ -214,6 +218,141 @@ public class UploadController {
 		System.out.println("\nYou successfully uploaded " + file.getName() + "! The file size was " + file.getSize()/1000 + " Kb.");
 		
 		return "success";
+	}
+	
+	@RequestMapping(value="/sampleUpload", method=RequestMethod.POST)
+	public @ResponseBody String sampleUploadFlow(HttpServletRequest request,
+			@RequestParam("file") String filename,
+			@RequestParam("email") String email,
+			@RequestParam("latitude") String latitude,
+			@RequestParam("longitude") String longitude) {
+		
+		String path = request.getSession().getServletContext().getRealPath("/resources/test-images/" + filename);
+		File resource = new FileSystemResource(new File(path)).getFile();
+		
+//		String uri = "http://localhost:8080/uploadImage";
+//		RestTemplate restTemplate = new RestTemplate();
+//	     
+//	    HttpHeaders headers = new HttpHeaders();
+//	    headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+//	    MultiValueMap<String, Object> mvm  = null;
+//	    try{
+//	    	
+//		    mvm = new LinkedMultiValueMap<String, Object>();
+//		    mvm.add("file", new ByteArrayResource(mFile.getBytes()));
+////		    mvm.add("file", resource);
+//		    mvm.add("email", email);
+//		    mvm.add("latitude", latitude);
+//		    mvm.add("longitude", longitude);
+//		    
+//	    } catch(Exception e){
+//	    	e.printStackTrace();
+//	    }
+//	    
+////	    MultiValueMap<String, Object> mvm  = null;
+////		    mvm = new LinkedMultiValueMap<String, Object>();
+////		    mvm.add("message", "a hello from RestTemplate");
+//	    
+//	    HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(mvm, headers);
+//	     
+//	    ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.POST, requestEntity, String.class);
+////	    ResponseEntity<String> result = restTemplate.exchange("http://localhost:8080/uploadMessage", HttpMethod.POST, requestEntity, String.class);
+//	    
+//	    if (result != null && !result.getBody().trim().equals("")) {
+//	        return result.getBody();
+//	      }
+		
+		
+		try{
+		String lineEnd = "\r\n";
+        String twoHyphens = "--";
+        String boundary = "*****";
+        int bytesRead, bytesAvailable, bufferSize;
+        byte[] buffer;
+        int maxBufferSize = 1 * 1024 * 1024;
+
+		// open a URL connection to the Servlet
+        InputStream fileInputStream = new FileInputStream(new File(path));
+        URL url1 = new URL("http://localhost:8080/uploadImage");
+
+        // Open a HTTP  connection to  the URL
+        HttpURLConnection conn = (HttpURLConnection) url1.openConnection();
+
+        // Allow Inputs & Outputs
+        conn.setDoInput(true); // Allow Inputs
+        conn.setDoOutput(true); // Allow Outputs
+        conn.setUseCaches(false); // Don't use a Cached Copy
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Connection", "Keep-Alive");
+        conn.setRequestProperty("ENCTYPE", "multipart/form-data");
+        conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+        conn.setRequestProperty("Content-Disposition", "upload");
+        DataOutputStream dos = new DataOutputStream( conn.getOutputStream() );
+        dos.writeBytes(twoHyphens + boundary + lineEnd);
+
+        dos.writeBytes("Content-Disposition: form-data;name=\"email\";filename=\"" + email + "\"" + lineEnd);
+        //dos.writeBytes("Content-Type: text/plain" + lineEnd);
+        dos.writeBytes(lineEnd);
+        dos.writeBytes("amitagrawal@gmail.com");
+        dos.writeBytes(lineEnd);
+        dos.writeBytes(twoHyphens + boundary + lineEnd);
+
+        dos.writeBytes("Content-Disposition: form-data;name=\"latitude\";filename=\"" + latitude + "\"" + lineEnd);
+        //dos.writeBytes("Content-Type: text/plain" + lineEnd);
+        dos.writeBytes(lineEnd);
+        dos.writeBytes("amitagrawal@gmail.com");
+        dos.writeBytes(lineEnd);
+        dos.writeBytes(twoHyphens + boundary + lineEnd);
+
+        dos.writeBytes("Content-Disposition: form-data;name=\"longitude\";filename=\"" + longitude + "\"" + lineEnd);
+        //dos.writeBytes("Content-Type: text/plain" + lineEnd);
+        dos.writeBytes(lineEnd);
+        dos.writeBytes("amitagrawal@gmail.com");
+        dos.writeBytes(lineEnd);
+        dos.writeBytes(twoHyphens + boundary + lineEnd);
+
+        dos.writeBytes("Content-Disposition: form-data;name=\"file\";filename=\""
+                + filename + "\"" + lineEnd);
+
+        dos.writeBytes(lineEnd);
+        bytesAvailable = fileInputStream.available();
+        bufferSize = Math.min(bytesAvailable, maxBufferSize);
+        buffer = new byte[bufferSize];
+
+        // read file and write it into form...
+        bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+        while (bytesRead > 0) {
+            dos.write(buffer, 0, bufferSize);
+            bytesAvailable = fileInputStream.available();
+            bufferSize = Math.min(bytesAvailable, maxBufferSize);
+            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+        }
+
+        // send multipart form data necesssary after file data...
+        dos.writeBytes(lineEnd);
+        dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+
+        fileInputStream.close();
+        dos.flush();
+        dos.close();
+        
+        
+        // Responses from the server (code and message)
+        int serverResponseCode = conn.getResponseCode();
+        
+//        System.out.println("Response Code - " + serverResponseCode);
+//        System.out.println("Response Message - " + conn.getResponseMessage());
+        
+        return String.valueOf(serverResponseCode);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+        
+	    
+        
 	}
 	
 }

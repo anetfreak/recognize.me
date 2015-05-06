@@ -9,6 +9,7 @@
 		<script type="text/javascript" src="resources/js/jquery-2.1.3.min.js"></script>
 		<script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="resources/js/index.js"></script>
+		<script type="text/javascript" src="resources/js/upload.js"></script>
 		<link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" href="resources/bootstrap/css/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -30,52 +31,46 @@
 				
 				<div class="container">
 					<div class="row">
-						<div class="col-lg-8 col-lg-offset-1">
+						<div class="col-lg-11 col-lg-offset-1">
 							<h3>Recognize.me</h3>
 							<hr>
-							<h4>Upload File</h4>
-							<div id="upload-div" style="margin-top: 20px;">
-								<form:form class="form-group" method="POST" action="uploadImage"  enctype="multipart/form-data">
-									<div class="col-sm-6">
-							        	<input class="form-control" type="file" name="file" />
-							        </div>
-							        <div class="col-sm-3">
-							        	<input class="form-control btn btn-info" type="submit" value="Upload" />
-							        </div>
-							        <form:errors path="file" cssStyle="color: #ff0000;" />
-							    </form:form>
-							</div>
-							
+							<h4>Sample Upload Request Test Flow</h4>
+							<p>Please select an image below to test a sample application flow</p>
+<!-- 							<div id="upload-div" style="margin-top: 20px;"> -->
+<%-- 								<form:form class="form-group" method="POST" action="uploadImage"  enctype="multipart/form-data"> --%>
+<!-- 									<div class="col-sm-6"> -->
+<!-- 							        	<input class="form-control" type="file" name="file" /> -->
+<!-- 							        </div> -->
+<!-- 							        <div class="col-sm-3"> -->
+<!-- 							        	<input class="form-control btn btn-info" type="submit" value="Upload" /> -->
+<!-- 							        </div> -->
+<%-- 							        <form:errors path="file" cssStyle="color: #ff0000;" /> --%>
+<%-- 							    </form:form> --%>
+<!-- 							</div> -->
 						</div>
 					</div>
-					<div class="row">
-						<div class="col-lg-8 col-lg-offset-1">
+					<div class="row" id="input-div">
+						<div class="col-lg-11 col-lg-offset-1">
 							<div id="upload-image-div" style="margin-top: 20px;">
 								<c:forEach var="myimg" items="${imageUrlList}">
-									<form:form class="form-group" method="POST" action="uploadImage"  enctype="multipart/form-data">
-	<!-- 									<table>
-										<tbody>
-										<tr>
-											<td> -->
-											<div class="col-sm-3">
-	 											<%-- <img src="/userimages/${myimg}" width="100%" height="100px"> --%>
-	 											<input type="image" src="${myimg}" name="image" width="100%" height="100px">
-	 											<input style="display: none;" class="form-control" type="file" name="file" value="${myimg}" filename="abc.jpg"/>
-	 											<input style="display: none;" class="form-control" type="file" name="email" filename="myemail@gmail.com"/>
-	 											<input style="display: none;" class="form-control" value="678" type="file" name="latitude" />
-	 											<input style="display: none;" class="form-control" value="352653" type="file" name="longitude" />
-	<!-- 									  	</td>
-										  	<td> -->
-	 											<input class="form-control btn btn-info" type="submit" value="Upload" width="10px" />
-	 											</div>
-	<!--  										</td>
-	 									</tr>
-	 									</tbody>
-	 									</table>
-	 									<hr> -->
-	 									<form:errors path="file" cssStyle="color: #ff0000;" />
-								    </form:form>
+									<div class="col-sm-2" style="margin: 20px;">
+										<input id="${myimg}" class="test-image" type="image" src="/resources/test-images/${myimg}" name="image" width="200px" height="200px">
+										<input style="display: none;" class="form-control" type="file" name="file" value="${myimg}" filename="abc.jpg"/>
+										<input style="display: none;" class="form-control" type="file" name="email" filename="myemail@gmail.com"/>
+										<input style="display: none;" class="form-control" value="678" type="file" name="latitude" />
+										<input style="display: none;" class="form-control" value="352653" type="file" name="longitude" />
+									</div>
 								</c:forEach>
+							</div>
+						</div>
+					</div>
+					
+					
+					<div class="row" id="result-div" style="display:none;">
+						<div class="col-lg-11 col-lg-offset-1">
+							<div id="image-result-div" style="margin-top: 20px;">
+								<p>You have successfully uploaded the image for processing!</p>
+								<p>To try with another image, <a id="showImagesLink" href="#">Click here</a></p>
 							</div>
 						</div>
 					</div>

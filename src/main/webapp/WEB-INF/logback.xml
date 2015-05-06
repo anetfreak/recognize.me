@@ -6,7 +6,7 @@
 			</Pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>INFO</level>
+			<level>WARNING</level>
 		</filter>
 	</appender>
 
@@ -24,14 +24,14 @@
   	</appender>
 
 	<logger name="com.recognizeme" additivity="false">
-	    <level value="INFO" />
+	    <level value="WARNING" />
 		<appender-ref ref="dailyRollingFileAppender"/>
 		<appender-ref ref="minuteRollingFileAppender"/>
 		<appender-ref ref="consoleAppender" />
 	</logger>
 
 	<root>
-		<level value="DEBUG" />
+		<level value="WARNING" />
 		<appender-ref ref="consoleAppender" />
 	</root>
 </configuration>
