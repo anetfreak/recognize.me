@@ -16,7 +16,7 @@ using namespace std;
 /** @function main */
 int siftMatch( const char* template1, const char* tag, fstream& file )
 {
-  cout<<" image read start";
+  cout<<" image read start: ";
   Mat img_object = imread( template1, CV_LOAD_IMAGE_GRAYSCALE );
   if( !img_object.data )
   { std::cout<< " --(!) Error reading images " << std::endl; return -1; }
@@ -29,7 +29,7 @@ int siftMatch( const char* template1, const char* tag, fstream& file )
   std::vector<KeyPoint> keypoints_object, keypoints_scene;
   
   detector.detect( img_object, keypoints_object );
-  string keypointFile = string("/tmp/trained/keypoints/")+tag;
+  string keypointFile = string("/Users/amitagra/ImageMatching/trained/keypoints/")+tag;
   FileStorage storage1(keypointFile, FileStorage::WRITE);
   write(storage1, "tag", keypoints_object);
   storage1.release();
@@ -41,7 +41,7 @@ int siftMatch( const char* template1, const char* tag, fstream& file )
   extractor.compute( img_object, keypoints_object, descriptors_object );
  
   //Change by amit
-  string descriptorFile = string("/tmp/trained/descriptors/")+tag;
+  string descriptorFile = string("/Users/amitagra/ImageMatching/trained/descriptors/")+tag;
   FileStorage storage2(descriptorFile, FileStorage::WRITE);            // load it again
   write(storage2, "tag", descriptors_object);
   storage2.release();

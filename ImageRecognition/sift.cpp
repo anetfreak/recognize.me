@@ -51,42 +51,31 @@ void ransacTest(const std::vector<cv::DMatch> matches,const std::vector<cv::KeyP
 /** @function main */
 int siftMatch( const char* template1, const char* source1, fstream& file, std::vector<KeyPoint> keypoints_scene, Mat descriptors_scene )
 {
-  //cout<<" image read start";
-  //Mat img_object = imread( template1, CV_LOAD_IMAGE_GRAYSCALE );
-  //cout<<"image read complete";
-  //if( !img_object.data )
-  //{ std::cout<< " --(!) Error reading images " << std::endl; return -1; }
-
+  //cout<<"starting with sift match..."<<endl;
   //-- Step 1: Detect the keypoints using SURF Detector
   int minHessian = 400;
-
   SiftFeatureDetector detector( minHessian );
-
   std::vector<KeyPoint> keypoints_object ;
-
-  //detector.detect( img_object, keypoints_object );
-  string keypointFile = string("/tmp/trained/keypoints/")+template1;
+  string keypointFile = string("/Users/amitagra/ImageMatching/trained/keypoints/")+template1;
   FileStorage storage(keypointFile, FileStorage::READ);
   read(storage["tag"],keypoints_object);
   storage.release();
+  //cout<<"get keypoints complete..."<<endl;
 
   //-- Step 2: Calculate descriptors (feature vectors)
   SiftDescriptorExtractor extractor;
-
   Mat descriptors_object;
- 
-  //extractor.compute( img_object, keypoints_object, descriptors_object );
-  string descriptorFile = string("/tmp/trained/descriptors/")+template1;
+  string descriptorFile = string("/Users/amitagra/ImageMatching/trained/descriptors/")+template1;
   FileStorage storage1(descriptorFile, FileStorage::READ);            // load it again
   storage1["tag"] >> descriptors_object;
   storage1.release();
+  //cout<<"get descriptors complete..."<<endl;
 
   //-- Step 3: Matching descriptor vectors using FLANN matcher
   FlannBasedMatcher matcher;
   std::vector< DMatch > matches;
-  //matcher.knnMatch( descriptors_object, descriptors_scene,2,matches );
   matcher.match( descriptors_object, descriptors_scene, matches );
-
+  //cout<<"Match complete..."<<endl;
   double max_dist = 0; double min_dist = 300;
 
   //-- Quick calculation of max and min distances between keypoints
@@ -96,44 +85,11 @@ int siftMatch( const char* template1, const char* source1, fstream& file, std::v
     if( dist > max_dist ) max_dist = dist;
   }
 
-  //printf("-- Max dist : %f \n", max_dist );
-  //printf("-- Min dist : %f \n", min_dist );
-
   //-- Draw only "good" matches (i.e. whose distance is less than 3*min_dist )
   std::vector< DMatch > good_matches;
-
   ransacTest(matches,keypoints_object,keypoints_scene,good_matches,1,0.99,0.8);
-  
-  //  const float ratio = 0.8;
-  //  for( int i = 0; i < descriptors_object.rows; i++ )
-  //  { if( matches[i].distance < 3*min_dist )
-  //     { good_matches.push_back( matches[i]); }
-  //  }
-
-  //  for( int i = 0; i < descriptors_object.rows; i++ )
-  // { if( matches[i].distance < 3*min_dist )
-  //   { good_matches.push_back( matches[i]); }
-  //}
-
-  //printf("Template file : %s\n", template1);
-  //printf("Number of keypoints : %d\n", keypoints_object.size());
-  //printf("Number of good matches : %d\n", good_matches.size());
-
   cout<<setw(40)<<template1<<" | "<<setw(8)<<min_dist<<" | "<<setw(8)<< max_dist << " | "<<setw(8)<< keypoints_object.size() <<" | "<<setw(8)<< matches.size() <<" | "<<setw(8)<<good_matches.size()<<endl;
   return min_dist;
-  if(good_matches.size() > 100 && keypoints_object.size() > 300)
-  {
-     return 200;
-  }
-  if(good_matches.size() > 10 && good_matches.size() > keypoints_object.size()/2)
-  {
-     return 100;
-  }
-  else{
-    std::cout<<"Not enough good matches";
-    return 0;
-  }
-  return 0;
 }
 
 /** @function readme */
@@ -165,17 +121,19 @@ int readData(std::string templatePath, std::string sourcePath){
       }
       
       Mat img_scene = imread( sourcePath.c_str(), CV_LOAD_IMAGE_GRAYSCALE );
+      cout<<"Image read complete, start with matching...";
       int minHessian = 400;
 
       SiftFeatureDetector detector( minHessian );
       std::vector<KeyPoint>  keypoints_scene;
 
       detector.detect( img_scene, keypoints_scene );
-
+      cout<<"feature detection for image completed...";
       SiftDescriptorExtractor extractor;
       Mat descriptors_scene;
  
       extractor.compute( img_scene, keypoints_scene, descriptors_scene );
+      cout<<"computing extractor for image completed...";
       int adobeAvg, adobeCount, walmartAvg, walmartCount, starbucksAvg, starbucksCount, amazonAvg, amazonCount, appleAvg, appleCount;
       adobeAvg=0; adobeCount=0; walmartAvg=0; walmartCount=0; starbucksAvg=0; starbucksCount=0; amazonAvg=0; amazonCount=0; appleAvg=0; appleCount=0;
       int minimum = 100, min_match = 0;
