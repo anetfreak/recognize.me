@@ -1,9 +1,11 @@
 package com.glassify.controller;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
@@ -15,6 +17,7 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -88,7 +91,7 @@ public class UploadController {
 	}
 	
 	@RequestMapping(value="/uploadImage", method=RequestMethod.POST)
-	public @ResponseBody String uploadImage(
+	public @ResponseBody AuditTrail uploadImage(
 			@RequestParam("file") MultipartFile file,
 			@RequestParam("email") MultipartFile email,
 			@RequestParam("latitude") MultipartFile latitude,
@@ -181,12 +184,12 @@ public class UploadController {
                 mirrorClient.insertTimelineItem(credential, timelineItem);
                 resultString += "\nAd posted to glass time line";
                 /*logging in DB*/auditTrail.setAdPosted(true);
-                return resultString;
+//                return resultString;
                 
             } catch (Exception e) {
             	e.printStackTrace();
             	resultString += "\nException: " + e.getMessage();
-                return "Exception: " + file.getName() + " => " + e.getMessage();
+//                return "Exception: " + file.getName() + " => " + e.getMessage();
             }
             finally{
             	logger.info("Final Result string: ");
@@ -202,8 +205,10 @@ public class UploadController {
             
         } else {
         	logger.info("File is empty");
-            return "You failed to upload " + file.getName() + " because the file was empty.";
+//            return "You failed to upload " + file.getName() + " because the file was empty.";
         }
+		
+		return auditTrail;
 	}
 	
 	@RequestMapping(value="/testUpload", method=RequestMethod.POST)
@@ -221,7 +226,7 @@ public class UploadController {
 	}
 	
 	@RequestMapping(value="/sampleUpload", method=RequestMethod.POST)
-	public @ResponseBody String sampleUploadFlow(HttpServletRequest request,
+	public @ResponseBody AuditTrail sampleUploadFlow(HttpServletRequest request,
 			@RequestParam("file") String filename,
 			@RequestParam("email") String email,
 			@RequestParam("latitude") String latitude,
@@ -229,39 +234,6 @@ public class UploadController {
 		
 		String path = request.getSession().getServletContext().getRealPath("/resources/test-images/" + filename);
 		File resource = new FileSystemResource(new File(path)).getFile();
-		
-//		String uri = "http://localhost:8080/uploadImage";
-//		RestTemplate restTemplate = new RestTemplate();
-//	     
-//	    HttpHeaders headers = new HttpHeaders();
-//	    headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-//	    MultiValueMap<String, Object> mvm  = null;
-//	    try{
-//	    	
-//		    mvm = new LinkedMultiValueMap<String, Object>();
-//		    mvm.add("file", new ByteArrayResource(mFile.getBytes()));
-////		    mvm.add("file", resource);
-//		    mvm.add("email", email);
-//		    mvm.add("latitude", latitude);
-//		    mvm.add("longitude", longitude);
-//		    
-//	    } catch(Exception e){
-//	    	e.printStackTrace();
-//	    }
-//	    
-////	    MultiValueMap<String, Object> mvm  = null;
-////		    mvm = new LinkedMultiValueMap<String, Object>();
-////		    mvm.add("message", "a hello from RestTemplate");
-//	    
-//	    HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(mvm, headers);
-//	     
-//	    ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.POST, requestEntity, String.class);
-////	    ResponseEntity<String> result = restTemplate.exchange("http://localhost:8080/uploadMessage", HttpMethod.POST, requestEntity, String.class);
-//	    
-//	    if (result != null && !result.getBody().trim().equals("")) {
-//	        return result.getBody();
-//	      }
-		
 		
 		try{
 		String lineEnd = "\r\n";
@@ -293,21 +265,21 @@ public class UploadController {
         dos.writeBytes("Content-Disposition: form-data;name=\"email\";filename=\"" + email + "\"" + lineEnd);
         //dos.writeBytes("Content-Type: text/plain" + lineEnd);
         dos.writeBytes(lineEnd);
-        dos.writeBytes("amitagrawal@gmail.com");
+        dos.writeBytes("amitagra@gmail.com");
         dos.writeBytes(lineEnd);
         dos.writeBytes(twoHyphens + boundary + lineEnd);
 
         dos.writeBytes("Content-Disposition: form-data;name=\"latitude\";filename=\"" + latitude + "\"" + lineEnd);
         //dos.writeBytes("Content-Type: text/plain" + lineEnd);
         dos.writeBytes(lineEnd);
-        dos.writeBytes("amitagrawal@gmail.com");
+        dos.writeBytes("amitagra@gmail.com");
         dos.writeBytes(lineEnd);
         dos.writeBytes(twoHyphens + boundary + lineEnd);
 
         dos.writeBytes("Content-Disposition: form-data;name=\"longitude\";filename=\"" + longitude + "\"" + lineEnd);
         //dos.writeBytes("Content-Type: text/plain" + lineEnd);
         dos.writeBytes(lineEnd);
-        dos.writeBytes("amitagrawal@gmail.com");
+        dos.writeBytes("amitagra@gmail.com");
         dos.writeBytes(lineEnd);
         dos.writeBytes(twoHyphens + boundary + lineEnd);
 
@@ -345,13 +317,28 @@ public class UploadController {
 //        System.out.println("Response Code - " + serverResponseCode);
 //        System.out.println("Response Message - " + conn.getResponseMessage());
         
-        return String.valueOf(serverResponseCode);
+//        return String.valueOf(serverResponseCode);
+        
+        if(conn.getResponseCode() == 200) {
+        	//System.out.println(conn.getInputStream());
+        	InputStream in = conn.getInputStream();
+        	BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        	StringBuilder out = new StringBuilder();
+        	String line;
+        	while ((line = reader.readLine()) != null) {
+        		out.append(line);
+        	}
+        	reader.close();
+        	ObjectMapper mapper = new ObjectMapper();
+        	AuditTrail trail = mapper.readValue(out.toString(), AuditTrail.class);
+        	return trail;
+        }
+        
 		} catch(Exception e) {
 			e.printStackTrace();
-			return "error";
+			
 		}
-        
-	    
+		return null;
         
 	}
 	

@@ -69,8 +69,14 @@
 					<div class="row" id="result-div" style="display:none;">
 						<div class="col-lg-11 col-lg-offset-1">
 							<div id="image-result-div" style="margin-top: 20px;">
-								<p>You have successfully uploaded the image for processing!</p>
-								<p>To try with another image, <a id="showImagesLink" href="#">Click here</a></p>
+								<div><p class="text-success"><strong>Image for uploaded successfully!</strong> Below are the results</p></div>
+								<div>
+									<div><span><strong>Image Uploaded - </strong></span><span id="filename"></span></div>
+									<div><span><strong>Identified Brand - </strong></span><span id="brand"></span></div>
+									<div><span><strong>Advertisement Found? - </strong></span> <span id="adFound"></span></div>
+									<div><span><strong>Advertisement Content - </strong></span><span id="adText"></span></div>
+								</div>
+								<div style="margin-top: 20px;"><p>To try with another image, <a id="showImagesLink" href="#">Click here</a></p></div>
 							</div>
 						</div>
 					</div>

@@ -6,6 +6,11 @@ $(document).ready(function () {
 		$.post('http://localhost:8080/sampleUpload', { file: filename, email: 'amit.agrawal@sjsu.edu', latitude: '37.337166', longitude: '-121.881329' })
 		.done(function(data) {
 			console.log('Sample Test Request received..');
+			$('#filename').text('');
+			$('#brand').text(data.brand);
+			$('#adFound').text(data.adFound);
+			$('#adText').text(data.adText);
+			
 			$('#input-div').hide();
 			$('#result-div').show();
 		})
