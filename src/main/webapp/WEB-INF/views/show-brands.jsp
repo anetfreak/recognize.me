@@ -7,14 +7,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Recognize.Me! - Add Brand</title>
 <script type="text/javascript" src="resources/js/jquery-2.1.3.min.js"></script>
-<script type="text/javascript"
-	src="resources/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 <script type="text/javascript" src="resources/js/index.js"></script>
+<script type="text/javascript" src="resources/js/brands.js"></script>
 <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="resources/bootstrap/css/bootstrap-theme.min.css">
-<link rel="stylesheet"
-	href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="resources/bootstrap/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="resources/css/index.css">
 </head>
 <body>
@@ -39,7 +41,7 @@
 						<div id="show-brands" style="margin-top: 20px;">
 							<h4>Get All Brands</h4>
 							<div>
-								<table id="ads-table" class="table table-striped" style="margin-top: 30px;">
+								<table id="brands-table" class="table table-striped" style="margin-top: 30px;">
 									<thead>
 										<tr>
 											<th>Name</th>
