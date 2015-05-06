@@ -63,7 +63,7 @@ public class MirrorClient {
 	}
   }
   
-  private List<MenuItem> getMenuItems() {
+  private static List<MenuItem> getMenuItems() {
 	  List<MenuItem> menuItems = new ArrayList<MenuItem>();
 	  MenuItem delOption = new MenuItem().setAction("DELETE");
 	  MenuItem readOption = new MenuItem().setAction("READ_ALOUD");
@@ -84,6 +84,7 @@ public class MirrorClient {
 	    	"}";
 	    		
 	    timelineItem.setHtml(decoratedText);
+	    timelineItem.setText(text);
 	    timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
 	    timelineItem.setMenuItems(getMenuItems());    
 	    return timelineItem;
@@ -177,7 +178,6 @@ public class MirrorClient {
 			    	"}";
 			TimelineItem item = insertTimelineItem(getMirror(credential.getCredential()), decoratedText, "image/jpeg", stream, "DEFAULT");
 			
-			
 //			File file = new File("//Users//ameya//Downloads//doll.mp4");
 //			InputStream stream = new FileInputStream(file);
 //			TimelineItem item = insertTimelineItem(getMirror(credential.getCredential()), "Hola", "video/mp4", stream, "DEFAULT");
@@ -191,10 +191,7 @@ public class MirrorClient {
 	    TimelineItem timelineItem = new TimelineItem();
 	    timelineItem.setHtml(text);
 	    
-	    List<MenuItem> menuItemList = new ArrayList<MenuItem>();
-	    menuItemList.add(new MenuItem().setAction("DELETE"));
-        
-        timelineItem.setMenuItems(menuItemList);
+	    timelineItem.setMenuItems(getMenuItems()); 
 	    if (notificationLevel != null && notificationLevel.length() > 0) {
 	      timelineItem.setNotification(new NotificationConfig().setLevel(notificationLevel));
 	    }

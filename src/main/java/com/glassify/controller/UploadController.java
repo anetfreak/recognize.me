@@ -68,8 +68,8 @@ public class UploadController {
 	
 	@RequestMapping("/upload")
 	public ModelAndView showUploadPage(HttpServletRequest request) {
-		//MirrorClient client = new MirrorClient();
-		//client.testTimelineItem(credentialFacade);
+		MirrorClient client = new MirrorClient();
+		client.testTimelineItem(credentialFacade);
 		
 		List<String> imageUrlList = new ArrayList<String>();  
 		String path = request.getSession().getServletContext().getRealPath("/resources/test-images");
