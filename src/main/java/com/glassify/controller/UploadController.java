@@ -180,6 +180,7 @@ public class UploadController {
                 resultString += "\nFetch User Credential Success ";
                 //Post Ad to Glass Mirror TODO uncomment below lines
                 MirrorClient mirrorClient = new MirrorClient();
+                
                 TimelineItem timelineItem = mirrorClient.createTimeLineItemWithText(AdResponse);
                 mirrorClient.insertTimelineItem(credential, timelineItem);
                 resultString += "\nAd posted to glass time line";

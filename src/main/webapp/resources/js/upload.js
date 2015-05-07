@@ -3,7 +3,7 @@ $(document).ready(function () {
 	$('.test-image').on('click', function(e){
 		e.stopPropagation();
 		var filename = $(this).attr('id');
-		$.post('http://localhost:8080/sampleUpload', { file: filename, email: 'amit.agrawal@sjsu.edu', latitude: '37.337166', longitude: '-121.881329' })
+		$.post('http://localhost:8080/sampleUpload', { file: filename, email: 'glass4sjsu@gmail.com', latitude: '37.337166', longitude: '-121.881329' })
 		.done(function(data) {
 			console.log('Sample Test Request received..');
 			$('#filename').text('');
